@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+<title>SocialPerks</title>
+{% endblock pageTitle %}
+
+
+{% block pageContent %}
+<style type="text/css">
+#newCampaignBox{
+border:solid 1px #000000;
+width:20em;
+margin:0 auto;
+box-sizing:border-box;
+padding:0.2em;
+}
+
+.textBox{
+width:100%;
+padding:0.5em;
+border-radius:0.3em;
+border:solid 1px #C4D0D0;
+
+}
+
+#startDateTextBox{
+width:49%;
+}
+
+#endDateTextBox{
+width:49%;
+}
+
+#postCampaignButton{
+color:#FFFFFF;
+background-color: #6662BF;
+padding:0.75em;
+border:solid 1px #C4D0D0;
+border-radius:0.5em;
+cursor:pointer;
+}
+
+
+</style>
+
+<div style="margin:0 auto;text-align:center;">
+
+<div style="position:relative;top:1em;left:1em;text-align:left;position;font-size:1.2em;"><a href="/">< Back</a></div>
+
+<h2>SocialPerks<sup style="font-size:0.5em;"> &#174 </sup> </h2>
+
+<div id="newCampaignBox">
+
+
+<form id="newCampaignForm" method="post" action="/campaign/create_new/" enctype="multipart/form-data">{% csrf_token %}
+<h3>Post New Campaign</h3>
+
+<p><input class="textBox" type="text" name="title" placeholder="Campaign Name"/></p>
+<p><textarea class="textBox" type="text" name="description" placeholder="Campaign Description"></textarea></p>
+
+<p>
+<input id="startDateTextBox" class="textBox" type="text" name="startDate" placeholder="Start Date"/>
+<input id="endDateTextBox" class="textBox" type="text" name="endDate" placeholder="End Date"/> 
+</p>
+
+<p>
+Image: <input type="file" name="image"/>
+</p>
+
+<h3>Perks</h3>
+
+<div id="productPerks">
+<p>
+Product: <input type="checkbox" name="product"/>
+</p>
+<p>
+<textarea type="text" class="textBox" placeholder="Product Description" name="productDescription"></textarea>
+</p>
+<p>
+<input type="text" class="textBox" placeholder="Product Stock" name="productStock"/>
+</p>
+<p>
+Image: <input type="file" name="productImage"/>
+</p>
+</div>
+
+<div id="discountPerks">
+<p>
+Discount: <input type="checkbox" name="discount"/>
+</p>
+<p>
+<textarea type="text" class="textBox" placeholder="Discount Description" name="discountDescription"></textarea>
+</p>
+<p>
+<input type="text" class="textBox" placeholder="Discount Amount" name="discountAmount"/>
+</p>
+<p>
+<input type="text" class="textBox" placeholder="Discount Stock" name="discountStock"/>
+</p>
+<p>
+Image: <input type="file" name="discountImage"/>
+</p>
+</div>
+
+<div id="cashPerks">
+<p>
+Cash: <input type="checkbox" name="cash"/>
+</p>
+<p>
+<textarea type="text" class="textBox" placeholder="Cash Description" name="cashDescription"></textarea>
+</p>
+<p>
+<input type="text" class="textBox" placeholder="Minimum Amount" name="minimumCash"/>
+</p>
+<p>
+<input type="text" class="textBox" placeholder="Maximum Amount" name="maximumCash"/>
+</p>
+<p>
+<input type="text" class="textBox" placeholder="Cash Stock" name="cashStock"/>
+</p>
+
+</div>
+
+<p><input id="postCampaignButton" type="submit" name="submit" value="Post Campaign"/></p>
+</form>
+
+</div>
+
+
+</div>
+
+{% endblock pageContent %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+<title>My Proposals</title>
+{% endblock pageTitle %}
+
+{% block pageContent %}
+<div style="position:relative;text-align:left;position;font-size:1.2em;"><a href="/">< Back</a></div>
+
+<div style="text-align:center">
+
+<h3>My Proposals</h3>
+
+{% for proposal in proposals %}
+<p><a href="/proposal/{{proposal.id}}">{{proposal.campaign.title}}</a>
+{% if proposal.accepted == True %}
+( Accepted )
+{% elif proposal.declined == True %}
+( Declined )
+{% else %}
+( Pending )
+{% endif %}
+</p>
+{% empty %}
+<p>You have not sent any proposals.</p>
+{% endfor %}
+</div>
+
+{% endblock pageContent %}

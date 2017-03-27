@@ -1,0 +1,132 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+
+{% block topPage %}
+<style type="text/css">
+#filterBox{
+position:absolute;
+right:10px;
+top:16px;
+
+}
+#filterBox select{
+height:24px;
+
+}
+</style>
+
+<div style="position:relative;font-size:2.25em;text-align:center;width:100%;">PerkBoard</div>
+<div id="filterBox">
+
+<form id="filterForm" action="/perkboard/filter/" method="post">{% csrf_token %}
+
+<select id="categoryChoices" name="categoryChoice">
+<option value="all">All Niches</option>
+{% for category in categories %}
+<option value="{{category.id}}">{{category.title}}</option>
+{% endfor %}
+</select>
+
+<select id="timeChoices" name="timeChoice">
+<option value="newest">Newest</option>
+<option value="oldest">Oldest</option>
+</select>
+
+</form>
+
+</div>
+
+<script type="text/javascript">
+$('#categoryChoices').on('change',function(){
+
+var filterForm = $('#filterForm')
+var href = filterForm.attr('action')
+
+$.post(href,filterForm.serialize()).done(function(data){
+$('#perkFeed').html(data)
+}) 
+
+})
+
+$('#timeChoices').on('change',function(){
+
+var filterForm = $('#filterForm')
+var href = filterForm.attr('action')
+
+$.post(href,filterForm.serialize()).done(function(data){
+$('#perkFeed').html(data)
+}) 
+
+})
+
+</script>
+
+{% endblock topPage %}
+
+{% block bottomPageCss %}
+
+{% endblock bottomPageCss %}
+
+{% block bottomPage %}
+
+<style type="text/css">
+.perklet{
+width:170px;
+height:230px;
+border:solid 1px #A7A9AB;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:2.5px;
+position:relative;
+float:left;
+margin:0px 20px 20px 10px;
+}
+
+.perkletImage{
+width:100%;
+}
+
+.perkPin{
+height: 20px;
+width: 20px;
+border-radius: 25px;
+background-color: #619C80;
+position: absolute;
+left: 50%;
+margin-left: -10px;
+top: -10px;
+}
+
+{% include 'perk_feedlet_css.html' %}
+</style>
+
+<div id="perkFeed">
+{% for perk in perkboard %}
+<a style="color:#000000" href="/campaign/{{perk.slug}}/">
+
+<!-- <div class="perklet">
+<div class="perkPin">
+</div>
+{% if perk.image %}
+<img class="perkletImage"src="{{perk.image_thumbnail250.url}}"/>
+{% else %}
+<img class="perkletImage"src="{% static 'placeholder-square.jpg' %}"/>
+{% endif %}
+<span style="font-size:1em;color:#27A9E1;">{{perk.title}}</span>
+
+<p>
+{{perk.niche}}
+<span style="position:absolute;right:10px;">{{perk.requirement}}</span>
+</p>
+</div> -->
+
+{% include 'perk_feedlet.html' %}
+
+
+
+</a>
+{% endfor %}
+</div>
+
+{% endblock bottomPage %}

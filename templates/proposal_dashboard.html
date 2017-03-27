@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+
+{% endblock pageTitle %}
+
+{% block pageContent %}
+<style type="text/css">
+
+#proposalBox{
+border:solid 1px #000000;
+box-sizing:box-border;
+padding:1em;
+}
+
+#messageBox{
+border:solid 1px #000000;
+box-sizing:box-border;
+padding:1em;
+}
+
+#textField{
+width:100%;
+padding:0.5em;
+border-radius:0.3em;
+border:solid 1px #C4D0D0;
+}
+
+#sendFormBox{
+border:solid 1px #000000;
+box-sizing:box-border;
+padding:1em;
+}
+
+#proposalButtons{
+margin:0 auto;
+}
+#proposalButtons a{
+margin: 0 1em 0 1em;
+}
+#sendButton{
+color:#FFFFFF;
+background-color: #6662BF;
+padding:0.75em;
+border:solid 1px #C4D0D0;
+border-radius:0.5em;
+cursor:pointer;
+position:relative;
+right:1em;
+}
+</style>
+
+<div style="text-align:center;">
+<div style="position:relative;text-align:left;position;font-size:1.2em;"><a href="/">< Back</a></div>
+<h3>Proposal Dashboard</h3>
+
+<div id="proposalBox">
+
+<p>Proposal from <a href="/profile/{{proposal.user.username}}">{{proposal.user.username}}</a>.</p>
+
+{% if proposal.cashAmount != 0 %}
+<p><b>Cash Proposal:</b> ${{proposal.cashAmount}}</p>
+{% endif %}
+{% if proposal.description %}
+<p>{{proposal.description}}</p>
+{% endif %}
+
+<p>STATUS: 
+{% if proposal.accepted == True %}
+Accepted
+{% elif proposal.declined == True %}
+Declined
+{% else %}
+Pending
+{% endif %}
+</p>
+
+{% if proposal.accepted == True %}
+
+{% if loggedUser == proposal.campaign.user %}
+<p>
+<a href="#">View {{proposal.user.username}}'s Contact Information.</a>
+</p>
+{% endif %}
+
+{% endif %}
+
+{% if loggedUser == proposal.campaign.user %}
+<div id="proposalButtons">
+<a href="/proposal/accept/{{proposal.id}}">Accept</a> <a href="/proposal/decline/{{proposal.id}}">Decline</a>
+</div>
+{% endif %}
+
+</div>
+<div id="sendFormBox">
+<form action="/proposal/message/{{proposal.id}}/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<p><input id="textField" type="text" name="message" placeholder="Message"/></p>
+<p>Attachment: <input type="file" name="attachment"/></p>
+<p><input id="sendButton" type="submit" name="submit" value="Send Message"/></p>
+</form>
+
+<div>
+<i>
+Use this space to negotiate and manage posts.<br>
+
+</i>
+</div>
+
+</div>
+<div id="messageBox">
+
+{% for message in proposal.messages.all %}
+<p><a href="/profile/{{message.user.username}}">{{message.user.username}}</a> says: {{message.message}}</p>
+
+{% if message.attachment %}
+<p>Download Attachment <a href="{{message.attachment.url}}">Here</a></p>
+{% endif %}
+
+{% empty %}
+<p>There are no messages yet.</p>
+{% endfor %}
+</div>
+
+</div>
+{% endblock pageContent %}

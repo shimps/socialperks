@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+<title>{{user.username}}</title>
+{% endblock pageTitle %}
+
+{% block pageContent %}
+<div style="position:relative;text-align:left;position;font-size:1.2em;"><a href="/">< Back</a></div>
+
+<p>This page is made for {{user.username}}'s profile.
+{% if user.influencer %}
+( Influencer Account )
+{% elif user.brand %}
+( Brand Account )
+{% endif %}
+</p>
+
+{% if user.influencer %}
+<p>
+<b>Name: </b> {{user.influencer.firstName}} {{user.influencer.lastName}}
+</p>
+{% elif user.brand %}
+<p>
+<b>Name: </b> {{user.brand.firstName}} {{user.brand.lastName}}
+</p>
+<p>
+<b>Company: </b> {{user.brand.company}}
+</p>
+
+{% endif %}
+
+{% endblock pageContent %}

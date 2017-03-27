@@ -1,0 +1,138 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+
+{% block topPage %}
+
+<div style="position:relative;font-size:2.25em;text-align:center;width:100%;">LeaderBoard</div>
+
+
+
+
+{% endblock topPage %}
+
+{% block bottomPageCss %}
+
+{% endblock bottomPageCss %}
+
+{% block bottomPage %}
+<style type="text/css">
+.feedlet{
+width:190px;
+display:inline-block;
+margin:0px 5.015px 20px 0px;
+cursor:pointer;
+color:#000000;
+position:relative;
+}
+
+.feedletImage{
+border-radius:200px;
+border:solid 1px gray;
+}
+
+.feedletIcon{
+border:solid 1px #000000;
+border-radius:10px;
+
+
+}
+
+.feedletIconsBox{
+text-align:center;
+z-index:2;
+height:20px;
+padding-top:5px;
+}
+
+.feedletIcons span{
+margin: 0px 5px 0px 0px;
+}
+
+.iconHoverBox{
+
+width:100%;
+height:100%;
+position:absolute;
+z-index:3;
+}
+
+.iconFloater{
+position:absolute;
+left:25%;
+top:40px;
+color:gray;
+}
+</style>
+{% for influencer in leaderboard %}
+<a style="text-decoration:none;" href="/profile/{{influencer.user.username}}">
+<div class="feedlet">
+
+<div class="iconHoverBox" style="display:none;">
+
+<div class="iconFloater">
+<span class="socicon-instagram"></span><br>
+<span class="socicon-youtube"></span><br>
+<span class="socicon-twitter"></span>
+</div>
+
+</div>
+
+
+{% if influencer.image %}
+<img class="feedletImage" src="{{influencer.image_thumbnail250.url}}" width=190/>
+{% else %}
+<img class="feedletImage" src="{% static 'placeholder-square.jpg' %}" width=190/>
+{% endif %}
+
+<div style="text-align:center;">
+{{influencer.firstName}} {{influencer.lastName}}
+</div>
+
+{% if influencer.instagram == True or influencer.youtube == True or influencer.twitter == True %}
+<div class="feedletIconsBox">
+
+{% if influencer.instagram == True %}
+<span class="socicon-instagram"></span>
+{% endif %}
+{% if influencer.youtube == True %}
+<span class="socicon-youtube"></span>
+{% endif %}
+{% if influencer.twitter == True %}
+<span class="socicon-twitter"></span>
+{% endif %}
+</div>
+{% else %}
+<div class="feedletIconsBox">
+No accounts
+</div>
+{% endif %}
+</div>
+
+</a>
+
+
+{% empty %}
+<p>There aren't any users here.</p>
+{% endfor %}
+
+<script type="text/javascript">
+
+$('.feedlet').on('mouseenter',function(){
+var $this = $(this)
+
+$this.children('.feedletImage').css('opacity','0.55')
+
+
+})
+
+$('.feedlet').on('mouseleave',function(){
+var $this = $(this)
+
+$this.children('.feedletImage').css('opacity','1.0')
+
+
+})
+
+</script>
+{% endblock bottomPage %}

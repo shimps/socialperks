@@ -1,0 +1,73 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+
+{% block topPage %}
+<div style="position:relative;font-size:2.25em;text-align:center;width:100%;">Search Results</div>
+{% endblock topPage %}
+
+{% block bottomPageCss %}
+
+{% endblock bottomPageCss %}
+
+{% block bottomPage %}
+
+<style type="text/css">
+.perklet{
+width:170px;
+height:230px;
+border:solid 1px #A7A9AB;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:2.5px;
+position:relative;
+float:left;
+margin:0px 20px 20px 10px;
+}
+
+.perkletImage{
+width:100%;
+}
+
+.perkPin{
+height:25px;
+width:25px;
+border-radius:25px;
+background-color:#2AB573;
+position:absolute;
+
+left:50%;
+margin-left:-12.5px;
+top:-12.5px;
+}
+
+{% include 'perk_feedlet_css.html' %}
+</style>
+
+
+{% for perk in searchResults%}
+<a style="color:#000000" href="/campaign/{{perk.slug}}/">
+
+<!-- <div class="perklet">
+<div class="perkPin">
+</div>
+{% if perk.image %}
+<img class="perkletImage"src="{{perk.image_thumbnail250.url}}"/>
+{% else %}
+<img class="perkletImage"src="{% static 'placeholder-square.jpg' %}"/>
+{% endif %}
+<span style="font-size:1em;color:#27A9E1;">{{perk.title}}</span>
+
+<p>
+{{perk.niche}}
+<span style="position:absolute;right:10px;">{{perk.requirement}}</span>
+</p>
+</div> -->
+
+{% include 'perk_feedlet.html' %}
+</a>
+{% empty %}
+<p style="text-align:center;">There aren't any perks that match your search. Try another one.</p>
+{% endfor %}
+
+{% endblock bottomPage %}

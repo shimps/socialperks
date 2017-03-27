@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<title>Create Profile</title>
+
+<head>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+<style type="text/css">
+#formBox{
+width:350px;
+border:solid 1px #000000;
+border-radius:5px;
+position:fixed;
+left:50%;
+margin-left:-175px;
+box-sizing:border-box;
+padding:10px;
+background-color:#FFFFFF;
+font-family:'PT Sans';
+}
+
+.textField{
+width:100%;
+padding:5px;
+font-size:15px;
+font-family:'PT Sans';
+border-radius:5px;
+border:solid 1px gray;
+box-sizing:border-box;
+}
+#descriptionField{
+resize:vertical;
+}
+#saveProfileButton{
+width:100%;
+padding:10px;
+color:#FFFFFF;
+border-radius:5px;
+border:solid 1px gray;
+background-color:#00A550;
+font-size:20px;
+}
+
+body{
+background-color:#F1F1F2;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="formBox">
+<div style="text-align:center;font-size:20px"><b>Create your profile</b> <span style="font-size:0.8em;color:gray;">( Required )</span></div>
+<form action="/create_profile/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<p>
+<input style="width:49%"class="textField" type="text" name="firstName" {% if loggedUser.profile.brand == True %}placeholder="First Name"{% else %}placeholder="First Name"{% endif %}/>
+
+<input style="width:49%"class="textField" type="text" name="lastName" {% if loggedUser.profile.brand == True %}placeholder="Last Name"{% else %}placeholder="Last Name" {% endif %}/>
+</p>
+{% if loggedUser.profile.brand == True %}
+<p>
+<input class="textField" type="text" name="companyName" placeholder="Company Name"/>
+</p>
+{% endif %}
+<p>
+<input type="file" name="image" />
+</p>
+<p>
+<input class="textField" type="text" name="website" placeholder="Website"/>
+</p>
+<p>
+<textarea id="descriptionField"class="textField" name="description" placeholder="Describe yourself in a few words"></textarea>
+</p>
+
+<p>
+<input class="textField" type="text" name="phone" placeholder="Phone Number"/>
+</p>
+<p>
+<input class="textField" type="text" name="address" placeholder="Address"/>
+</p>
+<p>
+<input class="textField" type="text" name="city" placeholder="City"/>
+</p>
+<p>
+<input class="textField" type="text" name="country" placeholder="Country"/>
+</p>
+<p>
+<input class="textField" type="text" name="postcode" placeholder="Postcode"/>
+</p>
+
+<p>
+<input id="saveProfileButton"type="submit" name="submit" value="Save Profile"/>
+</p>
+
+</form>
+</div>
+
+</body>
+
+</html>

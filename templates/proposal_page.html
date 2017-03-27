@@ -1,0 +1,631 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+{% block topPageCss %}
+
+{% endblock topPageCss %}
+
+{% block extraDivs %}
+
+<style type="text/css">
+.finalProposalField{
+padding:5px;
+font-size:14px;
+box-sizing:border-box;
+border-radius:5px;
+border:solid 1px #dcdcdc;
+}
+
+#finalProposalButton{
+color:#FFFFFF;
+background-color:#2AB573;
+padding:10px;
+border-radius:3px;
+border:solid 1px #2AB573;
+font-size:16px;
+cursor:pointer;
+width:100%;
+}
+
+#finalProposalBox{
+position:fixed;
+left:50%;
+top:50%;
+z-index:3;
+background-color:#FFFFFF;
+border:solid 1px #cdcdcd;
+border-radius:5px;
+padding:10px;
+box-sizing:border-box;
+width:400px;
+min-height:275px;
+margin-left:-200px;
+margin-top:-137.5px;
+}
+
+#cashAmountField{
+width:32.5%;
+padding-top:7.5px;
+padding-bottom:7.5px;
+}
+#postNumberField{
+width:32.5%;
+padding-top:7.5px;
+padding-bottom:7.5px;
+}
+
+#endDateField{
+width:32.5%;
+padding-top:7.5px;
+padding-bottom:7.5px;
+}
+
+#finalProposalDescriptionField{
+width:100%;
+height:100px;
+font-family:'PT Sans';
+resize:vertical;
+}
+
+#acceptFinalProposalButton{
+width:95%;
+padding:10px;
+border:solid 1px #cdcdcd;
+border-radius:3px;
+box-sizing:border-box;
+font-size:18px;
+text-align:center;
+cursor:pointer;
+background-color:#2AB573;
+color:#FFFFFF;
+position:absolute;
+bottom:10px;
+}
+</style>
+
+{% if loggedUser == proposal.user %}
+<style type="text/css">
+
+#editProposalBox{
+width:400px;
+box-sizing:border-box;
+padding:10px;
+border:solid 1px gray;
+border-radius:5px;
+position:fixed;
+left:50%;
+margin-left:-200px;
+background-color:#FFFFFF;
+z-index:5;
+
+display:none;
+}
+
+#editProposalField{
+width:100%;
+box-sizing:border-box;
+padding:5px;
+border:solid 1px gray;
+border-radius:5px;
+resize:vertical;
+height:100px;
+font-family:'PT Sans';
+font-size:15px;
+}
+
+#cashProposalField{
+border:solid 1px gray;
+border-radius:5px;
+box-sizing:border-box;
+padding:5px;
+}
+
+#editProposalButton{
+width:100%;
+padding:10px;
+font-size:20px;
+color:#FFFFFF;
+cursor:pointer;
+background-color:#2AB573;
+border-radius:3px;
+border:solid 1px #29A366;
+}
+
+
+</style>
+<div id="editProposalBox">
+<div style="font-size:22px;">
+<b>Edit Proposal</b>
+</div>
+<form action="/proposal/edit/{{proposal.id}}/" method="post" >{% csrf_token %}
+<p>
+<textarea id="editProposalField" name="description" placeholder="Why should you get this perk?">{{proposal.description}}</textarea>
+</p>
+{% if proposal.campaign.cash == True %}
+<p>
+<input id="cashProposalField"type="text" name="cashAmount" placeholder="Cash Proposal" value="{{proposal.cashAmount}}"/>
+</p>
+{% endif %}
+<p>
+<input id="editProposalButton"type="submit" name="submit" value="Save Proposal"/>
+</p>
+</form>
+
+</div>
+
+{% endif %}
+
+{% if proposal.campaign.cash == True and proposal.user == loggedUser %}
+
+<div style="color:#000000;display:none;" id="finalProposalBox">
+
+<div style="text-align:center;"><b>Final Proposal</b></div><br>
+<form action="/proposal/post_final_proposal/{{proposal.campaign.id}}/"method="post">{% csrf_token %}
+<input id="cashAmountField" class="finalProposalField" type="text" name="cashAmount" placeholder="£ "/>
+<input id="postNumberField" class="finalProposalField" type="text" name="postNumber" placeholder="Number of Posts"/>
+<input id="endDateField" class="finalProposalField" type="text" name="endDate" placeholder="End Date"/>
+<p>
+<textarea id="finalProposalDescriptionField" class="finalProposalField" name="description" placeholder="Final Negotiation Details"></textarea>
+</p>
+<input id="finalProposalButton"type="submit" name="submit" value="Submit"/>
+</form>
+
+</div>
+
+{% elif proposal.campaign.cash == True and proposal.campaign.user == loggedUser %}
+<style type="text/css">
+#finalProposalBox span{
+margin:0px 10px 0px 0px;
+}
+</style>
+<div style="color:#000000;display:none;" id="finalProposalBox">
+
+<div style="text-align:center;"><b>Final Proposal</b></div><br>
+<span><b>Cash: </b>£ {{finalProposal.cashAmount}}</span>
+<span><b>Posts: </b>{{finalProposal.numberOfPosts}}</span>
+<span><b>End Date: </b>{{finalProposal.date}}</span>
+<p>
+{{finalProposal.description}}
+</p>
+
+<div>
+
+<div style="display:none;"id="paypalFormBox">
+{{paypalForm.render}}
+</div>
+<a id="acceptFinalProposalLink"style="color:#FFFFFF;text-decoration:none;"href="/proposal/accept_final_proposal/{{finalProposal.id}}">
+<div id="acceptFinalProposalButton">
+Accept Final Proposal
+</div>
+</a>
+</div>
+
+</div>
+
+<script type="text/javascript">
+
+$('#acceptFinalProposalLink').on('click',function(e){
+e.preventDefault()
+var $this = $(this)
+var href = $this.attr('href')
+var paypalForm = $this.siblings('#paypalFormBox').find('form')
+
+$.get(href).done(function(){
+
+})
+paypalForm.submit()
+})
+
+</script>
+
+
+{% endif %}
+
+{% endblock extraDivs %}
+
+{% block topPage %}
+
+<style type="text/css">
+#proposalImage{
+border-radius:75px;
+position:absolute;
+}
+
+#proposalInformationBox{
+padding:5px;
+padding-top:10px;
+}
+
+#proposalMeta{
+min-height:200px;
+
+padding-left:135px;
+padding-right:90px;
+
+}
+
+#proposalStats{
+position:absolute;
+
+width:125px;
+padding-top:125px;
+text-align:center;
+}
+
+.statButton{
+padding:2.5px;
+border:solid 1px gray;
+border-radius:5px;
+margin:10px 0px 0px 0px;
+cursor:pointer;
+}
+
+#proposalDecisionButtons{
+position:absolute;
+right:10px;
+top:15px;
+}
+#proposalDecisionButtons span{
+padding:5px;
+padding-left:10px;
+padding-right:10px;
+border:solid 1px gray;
+border-radius:5px;
+color:#FFFFFF;
+cursor:pointer;
+}
+</style>
+
+<div id="proposalInformationBox">
+
+{% if proposal.user.profile.image %}
+<img id="proposalImage" src="{{proposal.user.profile.image_thumbnail250.url}}" width=125 height=125/>
+{% else %}
+<img id="proposalImage" src="{% static 'placeholder-square.jpg' %}" width=125 height=125/>
+{% endif %}
+
+{% if proposal.user == loggedUser %}
+<div id="proposalDecisionButtons">
+<a id="editProposalProfileButton"style="text-decoration:none;"href="#"><span style="color:#000000">Edit Proposal</span></a>
+</div>
+{% else %}
+<div id="proposalDecisionButtons">
+
+<a style="text-decoration:none;"href="/proposal/accept/{{proposal.id}}">
+<span style="background-color:#2AB573;">Accept</span>
+</a>
+
+<a style="text-decoration:none;"href="/proposal/decline/{{proposal.id}}">
+<span style="background-color:#EF4036">Decline</span>
+</a>
+
+</div>
+{% endif %}
+
+<div id="proposalStats">
+
+<b>
+
+<div class="statButton">
+View Stats
+</div>
+
+{% if proposal.accepted == True %}
+<div class="statButton" style="background-color:#2AB573;color:#FFFFFF;">
+Accepted
+</div>
+{% elif proposal.declined == True %}
+<div class="statButton" style="background-color:#EF4036;color:#FFFFFF">
+Declined
+</div>
+{% else %}
+<div class="statButton" style="background-color:gray;color:#FFFFFF;">
+Pending
+</div>
+{% endif %}
+
+</b>
+</div>
+
+<div id="proposalMeta">
+
+<div style="font-size:17px;">
+<div>
+{% if proposal.user == loggedUser %}
+You sent this proposal to <a style="color:#27A9E1;text-decoration:none;" href="/profile/{{proposal.campaign.user.username}}">{{proposal.campaign.user.username}}</a>.
+{% else %}
+<a style="text-decoration:none;color:#27A9E1;"href="/profile/{{proposal.user.username}}/">{{proposal.user.username}}</a> sent you a proposal.
+{% endif %}
+</div>
+
+<div>
+<b>Campaign:</b> <a style="color:#27A9E1;text-decoration:none;"href="/campaign/{{proposal.campaign.slug}}">{{proposal.campaign.title}}</a>
+</div>
+
+<div>
+<b>Type:</b> 
+{% if proposal.campaign.cash == True %} 
+Cash <b>Amount: £</b>{{proposal.cashAmount}}
+{% elif proposal.campaign.discount == True %}
+Discount
+{% elif proposal.campaign.product == True %}
+Product
+{% endif %}
+</div>
+<br>
+<div>
+<b>Message:</b> <span>{{proposal.description}}</span>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+
+$('#editProposalProfileButton').on('click',function(){
+
+$('#faderBox').fadeIn(200)
+$('#editProposalBox').fadeIn(200)
+
+})
+
+$('#faderBox').on('click',function(){
+$('#faderBox').fadeOut(200)
+$('#editProposalBox').fadeOut(200)
+$('#finalProposalBox').fadeOut(200)
+
+})
+
+</script>
+
+{% endblock topPage %}
+
+{% block bottomPageCss %}
+
+{% endblock bottomPageCss %}
+
+{% block bottomPage %}
+
+<style type="text/css">
+#container >div{
+float:left;
+margin: 0px 5px 0px 0px;
+}
+#proposalMessageFormBox{
+position:relative;
+border:solid 1px #A7A9AB;;
+width:18.36em;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:5px;
+}
+
+#proposalMessages{
+position:relative;
+border:solid 1px #A7A9AB;
+width:31em;
+min-height:500px;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:5px;
+}
+
+#proposalMessageTextField{
+width:100%;
+border:solid 1px #A7A9AB;
+border-radius:5px;
+box-sizing:border-box;
+height:100px;
+font-family:'PT Sans';
+font-size:16px;
+resize:vertical;
+}
+
+#proposalMessageButton{
+width:100%;
+padding:10px;
+font-size:20px;
+color:#FFFFFF;
+cursor:pointer;
+background-color:#2AB573;
+border-radius:3px;
+border:solid 1px #29A366;
+box-sizing:border-box;
+text-align:center;
+}
+
+#messageFeed{
+max-height:500px;
+overflow:scroll;
+overflow-x:hidden;
+padding-top:5px;
+}
+
+#messageFeed::-webkit-scrollbar {
+    width: 0.4em;
+}
+ 
+#messageFeed::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+#messageFeed::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.messageFeedlet{
+position:relative;
+padding-bottom:10px;
+
+}
+.messageMeta{
+padding-left:55px;
+}
+.messageProfileImage{
+border-radius:25px;
+float:left;
+position:absolute;
+}
+
+#completeDealButton{
+color:#FFFFFF;
+border:solid 1px #A7A9AB;
+border-radius:5px;
+background-color:#27A9E1;
+font-size:18px;
+text-align:center;
+width:100%;
+padding:10px;
+box-sizing:border-box;
+}
+
+#topMessageBar{
+text-align:center;
+width:100%;
+font-size:16px;
+border:solid 1px #dcdcdc;
+padding:5px;
+box-sizing:border-box;
+cursor:pointer;
+color:#27A9E1;
+}
+
+
+</style>
+
+<div id="container">
+
+<div id="proposalMessages">
+
+{% if proposal.accepted == False %}
+<div>
+<i>NOTE: You won't be able to send any messages until the proposal is accepted.</i>
+</div>
+{% elif proposal.campaign.cash == True and proposal.user == loggedUser %}
+<div id="topMessageBar">
+
+<span id="makeFinalProposalButton">Make Final Proposal</span>
+
+</div>
+{% elif proposal.campaign.cash == True and proposal.campaign.user == loggedUser and finalProposal %}
+<div id="topMessageBar">
+
+<span id="viewFinalProposalButton">You have been sent a final proposal</span>
+
+</div>
+{% endif %}
+
+
+
+<div id="messageFeed">
+
+{% for message in proposal.messages.all %}
+<div class="messageFeedlet">
+
+{% if message.user.profile.image %}
+<img class="messageProfileImage" src="{{message.user.profile.image_thumbnail250.url}}" width=50 height=50/>
+{% else %}
+<img class="messageProfileImage" src="{% static 'placeholder-square.jpg' %}" width=50 height=50/>
+{% endif %}
+<div class="messageMeta">
+<a style="text-decoration:none;color:#27A9E1;"href="/profile/{{message.user.username}}">{{message.user.username}}</a> says:
+<br><span style="font-size:0.75em;color:gray;">{{message.date|timesince}} ago.</span>
+<div>
+{{message.message}}<br>
+
+{% if message.attachment %}
+Download attachment <a style="color:#27A9E1;"href="{{message.attachment.url}}">Here</a>
+{% endif %}
+</div>
+</div>
+
+</div>
+{% empty %}
+<p>There are no messages</p>
+{% endfor %}
+
+</div>
+
+</div>
+
+<div id="proposalMessageFormBox">
+
+<form id="proposalMessageForm" action="/proposal/message/{{proposal.id}}/" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+<p>
+<textarea id="proposalMessageTextField" name="message" placeholder="Message.."></textarea>
+</p>
+<p>
+Attachment: <input type="file" name="attachment" />
+</p>
+{% if proposal.accepted == True %}
+<p>
+<input id="proposalMessageButton" type="submit" name="submit" value="Send"/>
+</p>
+{% else %}
+<p>
+<div id="proposalMessageButton">Send</div>
+</p>
+{% endif %}
+</form>
+
+<div>
+<i>
+<b>What can you do here?</b><br>
+<ul style="margin-left:-15px;">
+<li>Negotiate terms. (cash, number of posts, timing etc)</li>
+<li>Preapprove posts.</li>
+<li> Complete deals.</li> 
+</ul>
+</i>
+</div>
+
+{% if proposal.campaign.user == loggedUser %}
+
+<p><b>Done Negotiating?</b></p>
+{% if proposal.completed == False %}
+
+<a style="text-decoration:none;"href="/proposal/complete/{{proposal.id}}/">
+<div id="completeDealButton">
+Complete Deal
+</div>
+</a>
+
+{% else %}
+
+<div id="completeDealButton">
+Deal complete
+</div>
+
+{% endif %}
+
+{% endif %}
+
+</div>
+
+
+
+</div>
+
+<script type="text/javascript">
+
+$('#makeFinalProposalButton').on('click',function(){
+var $this = $(this)
+$('#faderBox').fadeIn(200)
+$('#finalProposalBox').fadeIn(200)
+})
+
+$('#viewFinalProposalButton').on('click',function(){
+$('#faderBox').fadeIn(200)
+$('#finalProposalBox').fadeIn(200)
+})
+</script>
+
+{% endblock bottomPage %}
+
+</div>
+
+

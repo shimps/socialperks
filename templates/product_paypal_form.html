@@ -1,0 +1,47 @@
+<style type="text/css">
+
+#campaignPaymentButton{
+width:100%;
+color:#FFFFFF;
+padding:10px;
+font-size:18px;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+background-color:#2AB573;
+cursor:pointer;
+box-sizing:border-box;
+}
+</style>
+
+<div style="text-align:center;">
+
+<div>
+<h2>Complete Payment</h2>
+</div>
+
+<p><b>Number of People Required:</b> {{slots}}</p>
+<p><b>Price: £</b>{{price}}</p>
+
+<div id="paymentFormBox"style="display:none;">
+{{paypalForm.render}}
+</div>
+
+<div id="campaignPaymentButton">
+Pay Now
+</div>
+
+
+</div>
+
+<script type="text/javascript">
+
+$('#campaignPaymentButton').on('click',function(){
+
+var $this = $(this)
+var form = $this.siblings().find('form')
+
+form.submit()
+
+})
+
+</script>

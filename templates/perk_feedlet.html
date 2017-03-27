@@ -1,0 +1,43 @@
+{% load static %}
+
+<div class="feedlet">
+<div class="perkPin">
+</div>
+<div class="feedletTitle">
+{% if perk.perk %}
+<b>{{perk.perk}}</b><br><br>
+{% else %}
+<b>{{perk.title}}</b><br><br>
+{% endif %}
+<span class="feedletDeadline">Ends: {{perk.endDate|date:"SHORT_DATE_FORMAT"}}</span>
+
+
+</div>
+
+<div style="color:gray;"id="socialIcons">
+{% if perk.twitter == True %}
+<span class="socicon-twitter"></span>
+{% endif %}
+{% if perk.facebook == True %}
+<span class="socicon-facebook"></span>
+{% endif %}
+{% if perk.instagram == True %}
+<span class="socicon-instagram"></span>
+{% endif %}
+{% if perk.youtube == True %}
+<span class="socicon-youtube"></span>
+{% endif %}
+{% if perk.vine == True %}
+<span class="socicon-vine"></span>
+{% endif %}
+</div>
+
+<div>
+{% if perk.image %}
+<img class="feedletImage" src="{{perk.image_thumbnail250.url}}"/>
+{% else %}
+<img class="feedletImage" src="{% static 'placeholder-square.jpg' %}"/>
+{% endif %}
+</div>
+
+</div>

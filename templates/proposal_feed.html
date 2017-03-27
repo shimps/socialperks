@@ -1,0 +1,52 @@
+{% load static %}
+
+<style type="text/css">
+.proposalUserImage{
+border-radius:25px;
+float:left;
+position:absolute;
+}
+.proposalMeta{
+border-bottom:solid 1px #A7A9AB;
+height:50px;
+padding:5px;
+}
+#campaignLink{
+position:absolute;
+right:10px;
+text-decoration:none;
+color:#27A9E1;
+}
+</style>
+<a id="campaignLink"href="/campaign/{{campaign.slug}}"><span>View Campaign</span></a>
+<br>
+{% for proposal in proposals %}
+<a style="text-decoration:none;color:#000000;"href="/proposal/{{proposal.id}}">
+
+<div class="proposalMeta">
+
+{% if proposal.user.profile.image %}
+<img class="proposalUserImage"src="{{proposal.user.profile.image_thumbnail250.url}}" width=50/>
+{% else %}
+<img class="proposalUserImage"src="{% static 'placeholder-square.jpg' %}" width=50/>
+{% endif %}
+
+<div style="padding-left:60px;">
+<span style="text-decoration:none;color:#27A9E1;" href="/profile/{{proposal.user}}">{{proposal.user}}</span> sent you a proposal<br>
+{{proposal.date|timesince}} ago. 
+<b>
+{% if proposal.accepted == True %}
+<span style="color:green">[ Accepted ]</span>
+{% elif proposal.declined == True %}
+<span style="color:red">[ Declined ]</span>
+{% else %}
+<span style="color:gray">[ Pending ]</span>
+{% endif %}
+</b>
+</div>
+</div>
+
+</a>
+{% empty %}
+<p>There are no proposals available for this campaign</p>
+{% endfor %}

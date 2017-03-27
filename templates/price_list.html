@@ -1,0 +1,271 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+
+{% block topPage %}
+<style type="text/css">
+#filterBox{
+position:absolute;
+right:10px;
+top:16px;
+
+}
+#filterBox select{
+height:24px;
+
+}
+</style>
+
+<div style="position:relative;font-size:2.25em;text-align:center;width:100%;">Pricing</div>
+
+
+
+
+{% endblock topPage %}
+
+{% block bottomPageCss %}
+
+{% endblock bottomPageCss %}
+
+{% block bottomPage %}
+<style type="text/css">
+
+.priceBox{
+border:solid 1px #dcdcdc;
+width:29.62%;
+padding:10px;
+height:300px;
+margin:0px 0px 0px 4px;
+background-color:#FFFFFF;
+display:inline-block;
+
+}
+
+.priceBox2{
+border:solid 1px #dcdcdc;
+width:29.62%;
+padding:10px;
+height:300px;
+margin:0px 0px 0px 4px;
+background-color:#FFFFFF;
+display:inline-block;
+}
+.priceButton{
+color:#FFFFFF;
+border:solid 1px #2AB573;
+border-radius:3px;
+padding:10px;
+box-sizing:border-box;
+background-color:#2AB573;
+text-align:center;
+cursor:pointer;
+}
+
+.priceContent{
+
+height:260px;
+
+}
+
+.pricingText{
+font-size:65px;
+width:100%;
+text-align:center;
+position:relative;
+color:#27A9E1;
+
+
+}
+.pricingSubText{
+font-size:16px;
+color:gray;
+
+}
+
+.currencySubText{
+font-size:16px;
+position:relative;
+top:-30px;
+left:0px;
+}
+
+#goldPricingLabel{
+width: 100%;
+font-size: 32px !important;
+text-align: center;
+padding: 20px;
+padding-top: 20px;
+position: relative;
+margin-top: 20px;
+/* border-top: solid 1px #dcdcdc; */
+box-sizing: border-box;
+}
+
+#standardPricingLabel{
+width: 100%;
+font-size: 32px !important;
+text-align: center;
+
+position: relative;
+
+
+box-sizing: border-box;
+}
+</style>
+
+<div id = "standardPricingLabel"style="text-align:center;font-size:22px;padding-bottom:10px;">Standard Plan</div>
+
+
+
+
+<div class="priceBox">
+
+<div class="priceContent">
+<div class="pricingText"><span class="currencySubText">£</span>12.99<span class="pricingSubText">/mo</span></div>
+<div style="text-align:center;position:relative;top:-10px;top:-10px;font-size:12px;color:gray;">
+<b>MONTHLY PLAN</b><br>
+<span style="font-size:16px;color:#000000;">( You Pay: £12.99 )</span>
+
+</div>
+</div>
+
+
+
+<div style="display:none"class="paymentFormBox">
+{{s_monthly.render}}
+</div>
+
+<div class="priceButton" id="monthlyPlanButton">
+SIGN UP NOW
+</div>
+
+</div>
+
+<div class="priceBox">
+
+<div class="priceContent">
+<div class="pricingText"><span class="currencySubText">£</span>11.99<span class="pricingSubText">/mo</span></div>
+
+<div style="text-align:center;position:relative;top:-10px;top:-10px;font-size:12px;color:gray;">
+<b>SIX MONTH PLAN</b><br>
+<span style="font-size:16px;color:#000000;">( You Pay: £71.94 )</span>
+</div>
+
+</div>
+
+<div style="display:none" class="paymentFormBox">
+{{s_6month.render}}
+</div>
+
+<div class="priceButton" id="sixMonthPlanButton">
+SIGN UP NOW
+</div>
+
+</div>
+
+<div class="priceBox">
+
+<div class="priceContent">
+<div class="pricingText"><span class="currencySubText">£</span>9.99<span class="pricingSubText">/mo</span></div>
+<div style="text-align:center;position:relative;top:-10px;font-size:12px;color:gray;">
+<b>12 MONTH PLAN</b><br>
+<span style="font-size:16px;color:#000000;">( You Pay: £119.88 ) </span>
+</div>
+</div>
+
+<div style="display:none" class="paymentFormBox">
+{{s_12month.render}}
+</div>
+
+<div class="priceButton" id="twelveMonthPlanButton">
+SIGN UP NOW
+</div>
+
+</div>
+
+
+
+<div id="goldPricingLabel"style="width:100%;font-size:22px;text-align:center;padding:10px;">
+Gold Plan
+</div>
+
+
+<div class="priceBox2">
+
+<div class="priceContent">
+<div style="color:#E5C205;"class="pricingText"><span class="currencySubText">£</span>49.99<span class="pricingSubText">/mo</span></div>
+<div style="text-align:center;position:relative;top:-10px;top:-10px;font-size:12px;color:gray;">
+<b>MONTHLY PLAN</b><br>
+<span style="font-size:16px;color:#000000;">( You Pay: £49.99 )</span>
+
+</div>
+</div>
+
+
+
+<div style="display:none"class="paymentFormBox">
+{{g_monthly.render}}
+</div>
+
+<div class="priceButton" id="monthlyGoldPlanButton">
+SIGN UP NOW
+</div>
+
+</div>
+
+<div class="priceBox2">
+
+<div class="priceContent">
+<div style="color:#E5C205;"class="pricingText"><span class="currencySubText">£</span>46.99<span class="pricingSubText">/mo</span></div>
+
+<div style="text-align:center;position:relative;top:-10px;top:-10px;font-size:12px;color:gray;">
+<b>SIX MONTH PLAN</b><br>
+<span style="font-size:16px;color:#000000;">( You Pay: £281.94 )</span>
+</div>
+
+</div>
+
+<div style="display:none" class="paymentFormBox">
+{{g_6month.render}}
+</div>
+
+<div class="priceButton" id="sixMonthGoldPlanButton">
+SIGN UP NOW
+</div>
+
+</div>
+
+<div class="priceBox2">
+
+<div class="priceContent">
+<div style="color:#E5C205;"class="pricingText"><span class="currencySubText">£</span>44.99<span class="pricingSubText">/mo</span></div>
+<div style="text-align:center;position:relative;top:-10px;font-size:12px;color:gray;">
+<b>12 MONTH PLAN</b><br>
+<span style="font-size:16px;color:#000000;">( You Pay: £539.88 ) </span>
+</div>
+</div>
+
+<div style="display:none" class="paymentFormBox">
+{{g_12month.render}}
+</div>
+
+<div class="priceButton" id="twelveMonthGoldPlanButton">
+SIGN UP NOW
+</div>
+
+</div>
+
+<script type="text/javascript">
+
+$('.priceButton').on('click',function(){
+
+var $this = $(this)
+var form = $this.siblings('.paymentFormBox').find('form')
+
+form.submit()
+
+})
+
+</script>
+
+{% endblock bottomPage %}

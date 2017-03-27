@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+
+{% endblock pageTitle %}
+
+{% block pageContent %}
+<div style="text-align:center;">
+<h2>Welcome to SocialPerks<sup style="font-size:0.5em;"> &#174 </sup>! </h2>
+
+<h3>Login</h3>
+
+<form action="/login/" method="post">{% csrf_token %}
+
+<p><input class="textField" type="text" name="username" placeholder="Username"/></p>
+<p><input class="textField" type="password" name="password" placeholder="Password"/></p>
+<p><input type="submit" name="submit" value="Login"/></p>
+<p>Don't have an account? <a href="/register/">Register</a> now</p>
+
+</form>
+
+</div>
+
+{% endblock pageContent %}

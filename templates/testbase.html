@@ -1,0 +1,449 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Social Perks</title>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+<link href="https://file.myfontastic.com/n6vo44Re5QaWo8oCKShBs7/icons.css" rel="stylesheet">
+<style type="text/css">
+
+body{
+font-family:'PT Sans'
+}
+
+body{
+background-color:#F1F1F2;
+
+}
+
+#navBar{
+background-color:#404041;
+color:#FFFFFF;
+position:fixed;
+width:100%;
+height:4.375em;
+top:0px;
+left:0px;
+z-index:1;
+
+}
+
+#midNavBarLogo{
+
+color:#FFFFFF;
+font-size:1.688em;
+position:absolute;
+top:0.8em;
+z-index:2;
+}
+
+#midPage{
+/* border:solid 1px #000000; */
+margin:0 auto;
+width:50em;  /*50em*/
+
+z-index:1;
+position:relative;
+top:-0.55em;
+left:-0.45em;
+}
+
+#midPageNavBar{
+position:fixed;
+top:0px;
+height:4.4em;
+width:50em;
+z-index:10;
+background-color:#404041;
+}
+
+#midPageNavBarButtons{
+position:absolute;
+right:0.1em;
+top:1.9em;
+width:16.25em;
+color:#FFFFFF;
+
+
+}
+#midPageNavBarButtons span{
+margin:0px 0px 0px 20px;
+}
+
+#midPageNavBarProfile{
+width:40px;
+border:solid 1px #A7A9AB;
+border-radius:5em;
+background-color:gray;
+position:absolute;
+top:-0.5em;
+right:0.5em;
+float:right;
+cursor:pointer;
+}
+
+#midPageNavBarProfileDropdown{
+background-color:#FFFFFF;
+border-radius:5px;
+border:solid 1px #A7A9AB;
+width:100px;
+box-sizing:border-box;
+position:relative;
+float:right;
+right:-25px;
+top:15px;
+display:none;
+}
+#midPageNavBarProfileDropdown div{
+padding:10px;
+border-bottom:solid 1px #A7A9AB;
+text-align:center;
+}
+#midPageNavBarProfileDropdown a{
+text-decoration:none;
+color:#000000;
+}
+
+
+#searchBar{
+
+border:solid 1px #000000;
+border-radius:1em;
+background-color:#F1F1F2;
+z-index:2;
+height:2.5em;
+width:20em;
+
+padding-left:1em;
+padding-right:0.5em;
+}
+
+#searchBarForm{
+position:absolute;
+width:50em;
+top:1.3em;
+
+text-align:center;
+
+}
+
+#midPageContentTop{
+background-color:#FFFFFF;
+{% block topPageCss %}
+height:3.375em;
+{% endblock topPageCss %}
+border:solid 1px #A7A9AB;
+border-top:none;
+
+margin-top:79px;
+}
+
+#midPageContentBottom{
+{% block bottomPageCss %}
+background-color:#FFFFFF;
+border:solid 1px #A7A9AB;
+{% endblock bottomPageCss %}
+}
+
+#faderBox{
+background-color:#000000;
+position:fixed;
+width:100%;
+height:100%;
+z-index:2;
+top:0px;
+left:0px;
+opacity:0.5;
+display:none;
+}
+
+#notificationsBox{
+position:absolute;
+left:175px;
+top:25px;
+cursor:pointer;
+z-index:2;
+
+}
+#notificationsIcon{
+color:#FFFFFF;
+font-size:2em;
+}
+
+#notificationsFeedBox{
+border:solid 1px #dbdbdb;
+border-radius:5px;
+width:300px;
+height:300px;
+position:absolute;
+background-color:#FFFFFF;
+top:60px;
+left:40px;
+display:none;
+overflow-y:hidden;
+}
+
+#notificationsBubble{
+background-color:red;
+border-radius:25px;
+padding:5px;
+position:absolute;
+display:none;
+}
+
+#notificationsFeedBox::-webkit-scrollbar {
+    width: 0.4em;
+}
+ 
+#notificationsFeedBox::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+#notificationsFeedBox::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+#notificationsTitle{
+padding:7.5px;
+border-bottom:solid 1px #dbdbdb;
+position:fixed;
+background-color:#FFFFFF;
+width:300px;
+box-sizing:border-box;
+border-radius:5px 5px 0 0;
+height:40px;
+}
+
+#contactFormBox{
+border:solid 1px #dcdcdc;
+border-radius:5px;
+padding:0.5em;
+box-sizing:border-box;
+width:350px;
+background-color:#FFFFFF;
+position:fixed;
+z-index:3;
+left:50%;
+top:50%;
+margin-left:-175px;
+margin-top:-150px;
+display:none;
+}
+
+#contactFormField{
+width:100%;
+border:solid 1px #dcdcdc;
+border-radius:5px;
+padding:5px;
+box-sizing:border-box;
+font-family:'PT Sans';
+font-size:16px;
+height:150px;
+resize:vertical;
+}
+
+#contactFormSubmit{
+color:#FFFFFF;
+border-radius:3px;
+border:solid 1px #2AB573;
+font-size:18px;
+padding:10px;
+box-sizing:border-box;
+width:100%;
+background-color:#2AB573;
+width:100%;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+<div id="faderBox">
+
+</div>
+
+<div id="contactFormBox">
+<span style="color:green;display:none;"id="contactMessage">Message Sent.</span>
+<form id="contactForm" action="/contact/">{% csrf_token %}
+<p><textarea id="contactFormField" name="message" placeholder="Contact Admin...."></textarea></p>
+<input id="contactFormSubmit"type="submit" name="submit" value="Send Message"/>
+</form>
+</div>
+
+{% block extraDivs %}
+
+{% endblock extraDivs %}
+
+
+
+<div id="mainPage">
+
+<div id="navBar">
+
+
+</div>
+
+<div id="midPage">
+
+<div id="midPageNavBar">
+<a href="/perkboard/"><div id="midNavBarLogo">SocialPerks</div></a>
+
+<span id="notificationsBox"><span id="notificationsBubble"></span><i id="notificationsIcon"class="material-icons">inbox</i></span>
+
+<div id="notificationsFeedBox">
+<div id="notificationsTitle"style="">
+<b>Notifications</b>
+</div>
+<div id="notificationsFeed">
+
+</div>
+</div>
+
+<form id="searchBarForm" action="/search/"method="get">
+<input id="searchBar" type="text" name="search" placeholder="Find a Perk"/>
+</form>
+
+<div id="midPageNavBarButtons">
+
+<span><a style="color:#FFFFFF;text-decoration:none;" href="/perkboard/">PerkBoard</a></span>
+{% if loggedUser.profile.brand == True %}
+<span><a style="color:#FFFFFF;text-decoration:none;" href="/campaign/my/">Campaigns</a></span>
+{% else %}
+<span><a style="color:#FFFFFF;text-decoration:none;" href="/proposal/my/">Proposals</a></span>
+{% endif %}
+
+{% if loggedUser.profile.image %}
+<img id="midPageNavBarProfile" src="{{loggedUser.profile.image_thumbnail250.url}}"/>
+{% else %}
+<img id="midPageNavBarProfile" src="{% static 'placeholder-square.jpg' %}"/>
+{% endif %}
+
+<div id="midPageNavBarProfileDropdown">
+
+<a href="/profile/{{loggedUser.username}}"><div>My Profile</div></a>
+<a href="/settings/"><div>Settings</div></a>
+<a href="/terms/"><div>Terms</div></a>
+<a id="contactFormButton"href="#"><div>Contact</div></a>
+<a href="/logout/"><div>Logout</div></a>
+
+</div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="midPageContentTop">
+
+{% block topPage %}
+
+{% endblock topPage %}
+
+</div>
+
+<br>
+
+<div id="midPageContentBottom">
+{% block bottomPage %}
+
+{% endblock bottomPage %}
+</div>
+
+
+</div>
+
+<script type="text/javascript">
+
+var clicked = 0
+
+$('#midPageNavBarProfile').on('click',function(){
+$('#midPageNavBarProfileDropdown').toggle()
+
+})
+
+$('#notificationsIcon').on('click',function(){
+
+var notificationsBubble = $('#notificationsBubble')
+var notificationsFeedBox = $('#notificationsFeedBox')
+var notificationsFeed = $('#notificationsFeed')
+
+notificationsFeedBox.toggle()
+
+if(clicked==0){
+notificationsFeed.load('/load_notifications/')
+clicked=1
+}
+
+
+if(notificationsBubble.css('display')=='none'){
+
+}else{
+
+notificationsBubble.hide()
+}
+
+})
+
+$('#notificationsFeedBox').on('mouseenter',function(){
+$(this).css('overflow','auto')
+})
+
+$('#notificationsFeedBox').on('mouseleave',function(){
+$(this).css('overflow','hidden')
+})
+
+$(document).ready(function(){
+$.get('/load_notification_count/').done(function(data){
+
+if(parseInt(data)>0){
+$('#notificationsBubble').show()
+console.log('You have notifications')
+}else{
+
+}
+
+})
+})
+
+$('#contactFormButton').on('click',function(){
+var $this = $(this)
+$this.parent().hide()
+$('#faderBox').fadeIn(200)
+$('#contactFormBox').fadeIn(200)
+
+})
+
+$('#faderBox').on('click',function(){
+var $this = $(this)
+$this.fadeOut(200)
+$('#contactFormBox').fadeOut(200)
+})
+
+$('#contactForm').on('submit',function(e){
+e.preventDefault()
+var $this = $(this)
+var href = $this.attr('action')
+
+$.post(href, $this.serialize()).done(function(data){
+$('#contactMessage').show()
+$('#contactFormField').val('')
+})
+
+})
+</script>
+
+</div>
+
+</body>
+
+</html>

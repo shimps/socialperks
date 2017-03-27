@@ -1,0 +1,385 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+{% block topPageCss %}
+
+{% endblock topPageCss %}
+
+{% block extraDivs %}
+
+{% if loggedUser.profile.brand == True %}
+
+<style type="text/css">
+#invitationBox{
+border:solid 1px #dcdcdc;
+width:400px;
+
+overflow:hidden;
+background-color:#FFFFFF;
+position:fixed;
+z-index:5;
+left:50%;
+margin-left:-200px;
+border-radius:5px;
+padding:10px;
+box-sizing:border-box;
+display:none;
+}
+
+#invitationBoxTitle{
+border-bottom:solid 1px #C4D0D0;
+width:100%;
+padding-bottom:10px;
+font-size:18px;
+}
+
+.campaignFeedlet{
+padding-top:10px;
+padding-bottom:10px;
+font-size:16px;
+box-sizing:border-box;
+}
+#campaignFeed{
+overflow:scroll;
+overflow-x:hidden;
+height:300px;
+}
+#campaignFeed::-webkit-scrollbar {
+    width: 0.3em;
+	
+}
+ 
+#campaignFeed::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+#campaignFeed::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+</style>
+
+<div id="invitationBox">
+
+<div id="invitationBoxTitle">
+<b>Pick a Campaign</b> <span id="sendInviteButton"style="color:#27A9E1;float:right;cursor:pointer;">Send Invite</span>
+</div>
+
+<div id="campaignFeed">
+
+<form id="campaignInvitationForm"action="/send_campaign_invitation/" method="post">{% csrf_token %}
+{% for campaign in loggedUser.campaigns.all %}
+<div class="campaignFeedlet">
+<input type="radio" name="campaign_id" value="{{campaign.id}}"/>{{campaign.title}}
+</div>
+{% empty %}
+<p>You don't have any campaigns available. Create one so you cam invite this user.</p>
+{% endfor %}
+<input type="hidden" name="user_id" value="{{profile.user.id}}"/>
+</form>
+
+</div>
+</div>
+
+<script type="text/javascript">
+
+$('#sendInviteButton').on('click',function(){
+
+var campaignInvitationForm = $('#campaignInvitationForm')
+var href = campaignInvitationForm.attr('action')
+
+$.post(href, campaignInvitationForm.serialize()).done(function(data){
+
+if(data=='success'){
+console.log('Invitation Sent')
+$('#invitationBox').html('<div style="width:100%;color:green;text-align:center;">Invitation Sent</div>')
+
+setTimeout(function(){
+
+$('#faderBox').fadeOut(200)
+$('#invitationBox').fadeOut(200)
+
+},1000)
+
+}else{
+console.log('Something went wrong.')
+
+$('#invitationBox').html('<div style="width:100%;color:green;text-align:center;">Something went wrong.</div>')
+
+setTimeout(function(){
+
+location.href=''
+
+},1000)
+
+}
+
+})
+
+})
+
+</script>
+
+{% endif %}
+
+{% endblock extraDivs %}
+
+{% block topPage %}
+
+<style type="text/css">
+#profileInformationBox{
+padding:10px;
+
+}
+#profilePic{
+border-radius:125px;
+position:absolute;
+}
+#profileMeta{
+
+min-height:200px;
+padding-left:210px;
+width:350px;
+}
+
+#extraProfileInfo{
+position:absolute;
+border-left:solid 1px #A7A9AB;
+width:225px;
+right:0px;
+top:10px;
+height:200px;
+box-sizing:border-box;
+padding-left:10px;
+font-size:0.95em;
+}
+
+{% if loggedUser.profile.brand == True %}
+#inviteButton{
+left:50%;
+padding:5px;
+border:solid 1px gray;
+position:absolute;
+bottom:0px;
+text-align:center;
+color:#000000;
+border-radius:5px;
+width:112.5px;
+margin-left:-56.25px;
+box-sizing:border-box;
+cursor:pointer;
+
+}
+
+#inviteButton:hover{
+border:solid 1px #27A9E1;
+color:#27A9E1;
+}
+{% endif %}
+</style>
+
+<div id="profileInformationBox">
+
+{% if profile.image %}
+<img id="profilePic" src="{{profile.image_thumbnail250.url}}" width=200/>
+{% else %}
+<img id="profilePic" src="{% static 'placeholder-square.jpg' %}" width=200/>
+{% endif %}
+
+<div id="profileMeta">
+<div style="font-size:18px;">
+{% if profile.influencer == True %}
+<b>{{profile.firstName}} {{profile.lastName}}</b> <span style="font-size:0.75em;">( Influencer Account )</span>
+{% else %}
+<b>{{profile.companyName}}</b> <span style="font-size:0.75em;">( Brand Account )</span>
+{% endif %}
+</div>
+<div style="color:gray;font-size:18px;">
+{{profile.user.username}}
+</div>
+<br>
+<div style="font-size:14px;">
+{{profile.description}}
+</div>
+
+</div>
+
+<div id="extraProfileInfo">
+<div>
+<b>Location:</b> {{profile.city}}, {{profile.country}}
+</div>
+<br>
+{% if profile.website %}
+<div>
+<b>Website:</b> <a style="text-decoration:none;color:#27A9E1;"href="http://{{profile.website}}">{{profile.website}}</a>
+</div>
+{% else %}
+<div>
+<b>Website:</b> n/a
+</div>
+{% endif %}
+
+{% if loggedUser.profile.brand %}
+<div id="inviteButton">
+Invite
+</div>
+{% endif %}
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+$('#inviteButton').on('click',function(){
+$('#faderBox').fadeIn(200)
+$('#invitationBox').fadeIn(200)
+})
+
+$('#faderBox').on('click',function(){
+$(this).fadeOut(200)
+$('#invitationBox').fadeOut(200)
+})
+</script>
+
+{% endblock topPage %}
+
+
+
+{% block bottomPage %}
+<style type="text/css">
+#socialMediaBox{
+padding:10px;
+position:relative;
+}
+.accountFeedlet{
+border-top:solid 1px #dbdbdb;
+position:relative;
+box-sizing:border-box;
+padding:5px;
+}
+
+.accountFeedletTitle{
+font-size:20px;
+}
+#connectButtons{
+position:absolute;
+right:10px;
+top:15px;
+}
+#connectInstagramButton{
+color:#FFFFFF;
+background-color:#125688;
+border-radius:5px;
+border:solid 1px #2E5A7C;
+}
+
+#connectYoutubeButton{
+color:#FFFFFF;
+background-color:#CC181E;
+border-radius:5px;
+border:solid 1px #CC181E
+}
+#connectTwitterButton{
+color:#FFFFFF;
+background-color:#55acee;
+border-radius:5px;
+border:solid 1px #4F9CD7;
+}
+
+.socialButtons{
+
+border-radius:3px;
+padding:5px;
+box-sizing:border-box;
+cursor:pointer;
+}
+
+.disconnectButton{
+position:absolute;
+color:#27A9E1;
+text-decoration:none;
+right:10px;
+}
+.disconnectButton a{
+
+}
+</style>
+
+<div id="socialMediaBox">
+<div id="connectButtons">
+
+<a style="text-decoration:none;"href="https://accounts.google.com/o/oauth2/auth?client_id={{youtube_client_id}}&redirect_uri={{callback_url}}&scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline"><span class="socialButtons"id="connectYoutubeButton"><span style="position:relative;top:2px;" class="socicon-youtube"></span> Connect Youtube</span></a>
+<a style="text-decoration:none;"href="{% url 'socialauth_begin' 'instagram' %}"><span class="socialButtons"id="connectInstagramButton"><span style="position:relative;top:2.5px;"class="socicon-instagram"></span> Connect Instagram</span></a>
+<a style="text-decoration:none;"href="{% url 'socialauth_begin' 'twitter' %}"><span class="socialButtons"id="connectTwitterButton"><span style="position:relative;top:2px;" class="socicon-twitter"></span> Connect Twitter</span></a>
+
+</div>
+<h3>
+Social Media Report Card
+</h3>
+
+{% for account in profile.user.socialAccounts.all %}
+<div class="accountFeedlet">
+
+{% if loggedUser == account.user %}
+<a class="disconnectButton" href="/disconnect_social_account/{{account.id}}">
+<div>
+Disconnect Account
+</div>
+</a>
+{% endif %}
+
+{% if account.platform == 'TWI' %}
+<div class="accountFeedletTitle"><b>Twitter</b></div>
+<p>Username: <a style="text-decoration:none;color:#27A9E1;" href="http://twitter.com/{{account.username}}">{{account.username}}</a></p>
+<p>Followers: {{account.followers}}</p>
+<p>Average Reactions Per Post: {{account.reactions}}</b>
+<p>Engagement Rate: {{account.engagement|floatformat:2}} %</p>
+
+{% elif account.platform == 'INS' %}
+<div class="accountFeedletTitle"><b>Instagram</b></div>
+<p>Username: <a style="text-decoration:none;color:#27A9E1;" href="http://instagram.com/{{account.username}}">{{account.username}}</a></p>
+<p>Followers: {{account.followers}}</p>
+<p>Average Reactions Per Post: {{account.reactions}}</b>
+<p>Engagement Rate: {{account.engagement|floatformat:2}} %</p>
+
+{% elif account.platform == 'YOU' %}
+<div class="accountFeedletTitle"><b>Youtube</b></div>
+<p>Channel Name: <a style="text-decoration:none;color:#27A9E1;" href="http://youtube.com/channel/{{account.username}}" target="_blank">{{account.channel_title}}</a></p>
+<p>Subscribers: {{account.followers}}</p>
+<p>Average Views Per Video: {{account.reactions}}</b>
+<p>Engagement Rate: {{account.engagement|floatformat:2}} %</p>
+
+{% endif %}
+
+</div>
+{% empty %}
+<p>There aren't any social media accounts connected to this profile.</p>
+{% endfor %}
+</div>
+
+<script type="text/javascript">
+
+$('#connectInstagramButton').on('click',function(e){
+
+var href = "/set_redirect_flag/"
+
+$.get(href).done(function(data){
+
+})
+})
+
+$('#connectTwitterButton').on('click',function(e){
+
+var href = "/set_redirect_flag/"
+
+$.get(href).done(function(data){
+
+})
+})
+</script>
+{% endblock bottomPage %}
+
+
+
+

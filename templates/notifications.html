@@ -1,0 +1,78 @@
+<style type="text/css">
+.notificationFeedlet{
+padding:10px;
+box-sizing:border-box;
+width:100%;
+border-bottom:solid 1px #dbdbdb;
+overflow:hidden;
+margin:5px 0px 0px 0px;
+text-decoration:none;
+font-size:0.9em;
+}
+
+#notificationFeed a{
+color:#27A9E1;
+}
+
+</style>
+<br><br>
+
+<div id="notificationFeed">
+
+{% for notification in notifications %}
+
+{% if notification.action == 'MR' %}
+<a style="text-decoration:none;"href="/proposal/{{notification.proposal.id}}">
+<div notification_id="{{notification.id}}" class="notificationFeedlet">
+<i style="position:absolute;color:gray;margin-top:-3px;;"class="material-icons">mail_outline</i><span style="padding-left:30px;">{{notification.sender}} sent you a message.</span>
+</div>
+</a>
+
+{% elif notification.action == 'PA' %}
+<a style="text-decoration:none;" href="/proposal/{{notification.proposal.id}}">
+<div notification_id="{{notification.id}}" class="notificationFeedlet">
+<i style="position:absolute;color:green;margin-top:-3px;"class="material-icons">check</i><span style="padding-left:30px;">{{notification.sender}} accepted your proposal.</span>
+</div>
+</a>
+{% elif notification.action == 'PD' %}
+<a style="text-decoration:none;" href="/proposal/{{notification.proposal.id}}">
+<div notification_id="{{notification.id}}" class="notificationFeedlet">
+<i style="position:absolute;color:red;margin-top:-3px;"class="material-icons">close</i><span style="padding-left:30px;">{{notification.sender}} declined your proposal.</span>
+</div>
+</a>
+{% elif notification.action == 'PR' %}
+<a style="text-decoration:none;" href="/proposal/{{notification.proposal.id}}">
+<div notification_id="{{notification.id}}" class="notificationFeedlet">
+<i style="position:absolute;margin-top:-3px;" class="material-icons">face</i><span style="padding-left:30px;">{{notification.sender}} sent you a proposal.</span>
+</div>
+</a>
+{% elif notification.action == 'CI' %}
+<a style="text-decoration:none;" href="/campaign/{{notification.campaign.slug}}/">
+<div notification_id="{{notification.id}}" class="notificationFeedlet">
+<i style="position:absolute;color:#D9D900;margin-top:-3px;"class="material-icons">star_border</i> <span style="padding-left:30px;">{{notification.sender}} sent you a perk invite.</span>
+</div>
+</a>
+{% endif %}
+
+{% empty %}
+<div style="border:none;"class="notificationFeedlet">
+You have no new notifications. Check again later.
+</div>
+{% endfor %}
+
+</div>
+
+<script type="text/javascript">
+
+$('.notificationFeedlet').on('click',function(){
+
+var $this = $(this)
+notification_id = $this.attr('notification_id')
+
+$.get('/read_notification/'+notification_id).done(function(){
+
+})
+
+
+})
+</script>

@@ -1,0 +1,520 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+{% block extraDivs %}
+
+{% if loggedUser == campaign.user %}
+<style type="text/css">
+
+#editCampaignBox{
+border:solid 1px gray;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:10px;
+width:350px;
+position:fixed;
+left:50%;
+margin-left:-175px;
+z-index:5;
+border-radius:5px;
+
+display:none;
+}
+
+.textField{
+width:100%;
+padding:7.5px;
+position:relative;
+border-radius:5px;
+border:solid 1px gray;
+box-sizing:border-box;
+font-family:'PT Sans';
+}
+
+#campaignPaymentFormBox{
+border:solid 1px gray;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:10px;
+width:350px;
+height:225px;
+position:fixed;
+left:50%;
+top:50%;
+margin-left:-175px;
+margin-top:-112.5px;
+z-index:5;
+border-radius:5px;
+
+display:none;
+}
+</style>
+
+
+{% if campaign.paid == False %}
+<div id="campaignPaymentFormBox">
+
+
+</div>
+{% endif %}
+<!--
+<div id="editCampaignBox">
+<div style="font-size:20px;">
+<b>Edit Campaign</b>
+</div>
+
+<form action="/campaign/edit/{{campaign.id}}/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<p>
+<input class="textField" type="text" name="campaignTitle" placeholder="Campaign Name" value="{{campaign.title}}"/>
+</p>
+<p>
+<textarea style="resize:vertical;" class="textField" type="text" name="perkDescription" placeholder="What perk are you offering? (Will be shown on PerkBoard)">{{campaign.perk}}</textarea>
+</p>
+<p>
+<input type="radio" name="offerType" value="discount" {% if campaign.discount %}checked{% endif %}/>Discount
+<input type="radio" name="offerType" value="product" {% if campaign.product %} checked {% endif %}/>Product
+<input type="radio" name="offerType" value="cash" {% if campaign.cash %}checked{% endif %}/>Cash
+</p>
+<p>
+<textarea style="resize:vertical;" class="textField" name="description" placeholder="Describe your campaign and requirements...">{{campaign.description}}</textarea>
+</p>
+
+<p>Niche: 
+<select name="categoryOption">
+{% for category in categories %}
+<option value="{{category.id}}" {% if category.id == campaign.category.id %}selected{% endif %}>{{category.title}}</option>
+{% endfor %}
+</select>
+</p>
+
+<p>
+<input class="textField" type="text" name="requirement" placeholder="What is your minimum follower requirement?" value="{{campaign.requirement}}"/>
+</p>
+<p>
+<input style="width:49%" class="textField" type="text" name="startDate" placeholder="Start Date" value="{{campaign.startDate|date:'Y-m-d'}}"/>
+<input style="width:49%" class="textField" type="text" name="endDate" placeholder="End Date" value="{{campaign.endDate|date:"Y-m-d"}}"/>
+</p>
+<p>
+Image: <input type="file" name="image"/>
+</p>
+<p>
+<input style="cursor:pointer;color:#FFFFFF;font-size:1.2em;background-color:#3b5998;" class="textField" type="submit" name="submit" value="Save Campaign"/>
+</p>
+</form>
+
+
+</div>
+-->
+<style type="text/css">
+
+#editCampaignBox{
+border:solid 1px #dcdcdc;
+border-radius:5px;
+padding:10px;
+width:500px;
+background-color:#FFFFFF;
+position:fixed;
+left:50%;
+z-index:6;
+margin-left:-250px;
+display:none;
+}
+.textField{
+width:100%;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+font-size:18px;
+resize:vertical;
+}
+#submitFormButton{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+display:none;
+cursor:pointer;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#descriptionField{
+font-family:'PT Sans';
+height:175px;
+}
+#pageOne{
+
+min-height:310px;
+}
+
+#pageTwo{
+display:none;
+min-height:310px;
+}
+
+#pageThree{
+display:none;
+height:320px;
+}
+
+#nextButtonOne{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+text-align:center;
+cursor:pointer;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#nextButtonTwo{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+text-align:center;
+cursor:pointer;
+display:none;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#dropdown{
+width:100%;
+padding:10px;
+font-size:20px;
+border-radius:3px;
+}
+
+#socialIconsBox span{
+font-size:20px;
+position:relative;
+top:2.5px;
+}
+
+#socialIconsBox >span{
+margin: 0px 10px 0px 0px;
+}
+</style>
+
+<div id="editCampaignBox">
+
+<form action="/campaign/edit/{{campaign.id}}/" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+<div id="pageOne">
+
+<p><input class="textField"type="text" name="campaignTitle" placeholder="Campaign Title" value="{{campaign.title}}"/></p>
+<p><input class="textField"type="text" name="perkDescription" placeholder="What perk are you offering?" value="{{campaign.perk}}"/></p>
+<p>
+<textarea id="descriptionField"class="textField" name="description" 
+placeholder="Describe your campaign and requirements. e.g. Number of followers you need, number of posts you want, how much you're offering per post etc " value="">{{campaign.description}}</textarea>
+</p>
+</div>
+<div id="pageTwo">
+
+<p>
+<i style="position:absolute;top:20px;padding-bottom:15px;font-size:30px;cursor:pointer;"id="backArrow" class="material-icons">arrow_back</i>
+</p>
+<div style="padding-bottom:10px;padding-top:20px;"><b>Niche</b></div>
+<select id="dropdown"name="categoryOption">
+{% for category in categories %}
+<option value="{{category.id}}"{% if category.id == campaign.category.id %}selected{% endif %}>{{category.title}} </option>
+{% endfor %}
+</select>
+
+<p>
+<input type="radio" name="offerType" value="product" {% if campaign.product == True %}checked="checked"{% endif %} disabled> Product / Experiences
+<input type="radio" name="offerType" value="cash" {% if campaign.cash == True %}checked="checked"{% endif %} disabled> Cash
+</p> 
+
+<div id="socialIconsBox">
+<div style="padding-bottom:5px;"><b>Platforms</b></div>
+<span><span class="socicon-instagram"></span><input type="checkbox" name="platform" value="instagram" {% if campaign.instagram == True %}checked{% endif %}></span>
+<span><span style="color:#55acee;"class="socicon-twitter"></span><input type="checkbox" name="platform" value="twitter" {% if campaign.twitter %}checked{% endif %}></span>
+<span><span style="color:#CC181E;"class="socicon-youtube"></span><input type="checkbox" name="platform" value="youtube" {% if campaign.youtube %}checked{% endif %}></span>
+</div>
+
+
+<p>
+<div style="padding-bottom:5px;"><b>Slots</b></div>
+<input class="textField"type="text" name="slots" placeholder="How many people do you need?" value="{{campaign.slots}}"{% if campaign.cash == False %} disabled {% endif %}/>
+</p>
+
+
+</div>
+
+<div id="pageThree">
+<p>
+<i style="position:absolute;top:20px;padding-bottom:15px;font-size:30px;cursor:pointer;" class="material-icons" id="backArrow2">arrow_back</i>
+</p>
+<p>
+<div style="padding-bottom:5px;padding-top:20px;"><b>End date</b></div>
+<input class="textField"type="text" name="endDate" value="{{campaign.endDate|date:"Y-m-d"}}" placeholder="YYYY-MM-YY"/>
+</p>
+
+<p>
+<div style="padding-bottom:5px;padding-top:20px;"><b>Campaign Image</b></div>
+<input type="file" name="image"/>
+</p>
+
+</div>
+
+<div id="nextButtonOne" page="1" class="nextButton">
+NEXT
+</div>
+<div id="nextButtonTwo" page="2" class="nextButton">
+NEXT
+</div>
+
+<input id="submitFormButton" type="submit" name="submit" value="SAVE"/>
+
+</form>
+
+</div>
+
+<script type="text/javascript">
+
+$('.nextButton').on('click',function(){
+var $this = $(this)
+var page = $this.attr('page')
+
+if(page==1){
+
+$('#pageTwo').show()
+$('#pageOne').hide()
+$('#nextButtonOne').hide()
+$('#nextButtonTwo').show()
+
+}else if(page==2){
+
+$('#pageTwo').hide()
+$('#pageThree').show()
+$('#nextButtonTwo').hide()
+
+$('#submitFormButton').show()
+}
+
+})
+
+$('#backArrow').on('click',function(){
+
+$('#pageTwo').hide()
+$('#pageOne').show()
+$('#nextButtonOne').show()
+$('#nextButtonTwo').hide()
+$('#submitFormButton').hide()
+})
+$('#backArrow2').on('click',function(){
+
+$('#pageTwo').show()
+$('#pageThree').hide()
+$('#nextButtonTwo').show()
+$('#submitFormButton').hide()
+})
+</script>
+
+{% endif %}
+{% endblock extraDivs %}
+
+{% block topPage %}
+<div style="position:relative;font-size:2.25em;text-align:center;width:100%;">Perk Info</div>
+{% endblock topPage %}
+
+{% block bottomPageCss %}
+
+{% endblock bottomPageCss %}
+
+
+
+{% block bottomPage %}
+
+<style type="text/css">
+#container >div{
+float:left;
+margin: 0px 5px 0px 0px;
+}
+#proposalBox{
+position:relative;
+border:solid 1px #A7A9AB;;
+width:18.36em;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:5px;
+}
+#perkProfileBox{
+position:relative;
+border:solid 1px #A7A9AB;
+width:31em;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:5px;
+}
+#proposalForm{
+
+}
+
+#proposalField{
+border:solid 1px #D1D1D5;
+width:98%;
+height:150px;
+border-radius:5px;
+resize:vertical;
+font-size:16px;
+font-family:'PT Sans';
+}
+
+#textField{
+padding:10px;
+border-radius:5px;
+border:solid 1px #D1D1D5;
+width:100%;
+box-sizing:border-box;
+}
+
+#proposalButton{
+width:100%;
+padding:10px;
+font-size:20px;
+color:#FFFFFF;
+cursor:pointer;
+background-color:#2AB573;
+border-radius:3px;
+border:solid 1px #29A366;
+}
+
+#editCampaignButton{
+position:absolute;
+font-size:17px;
+right:10px;
+cursor:pointer;
+}
+
+#showPaymentFormButton{
+border:solid 1px #dcdcdc;
+padding:5px;
+text-align:center;
+cursor:pointer;
+}
+
+#perkImage{
+border:solid 1px #dbdbdb;
+width:100%;
+}
+</style>
+
+<div id="container">
+
+<div id="perkProfileBox">
+
+{% if campaign.user == loggedUser %}
+
+{% if campaign.paid == False and campaign.product == True %}
+<div style="text-decoration:none;color:#27A9E1;" id="showPaymentFormButton">
+Campaign Inactive! Activate Now.
+</div>
+{% endif %}
+
+<div style="text-decoration:none;color:#27A9E1;" id="editCampaignButton">
+Edit Campaign
+</div>
+{% endif %}
+
+{% if campaign.perk %}
+<h3>{{campaign.perk}}</h3>
+{% else %}
+<h3>{{campaign.title}}</h3>
+{% endif %}
+
+{% if campaign.image %}
+<img id="perkImage" src="{{campaign.image.url}}" width=/>
+{% else %}
+<img id="perkImage" src="{% static 'placeholder-square.jpg' %}"/>
+{% endif %}
+
+<div style="font-size:20px;"><b>Information</b></div>
+
+{{campaign.description|linebreaks}}
+
+
+</div>
+
+<div id="proposalBox">
+
+<form id="proposalForm" action="/proposal/post/{{campaign.id}}/" method="post">{% csrf_token %}
+<span style="color:red;"id="submitMessage"></span>
+<p>
+<textarea id="proposalField" name="proposalMessage" placeholder="Why should you get this perk?"></textarea>
+</p>
+{% if campaign.cash == True %}
+<p><input id="textField" type="text" name="cashProposal" placeholder="Cash Proposal Amount"/></p>
+{% endif %}
+<p style="display:none;">
+<input type="radio" name="offerType" value="cash" {% if campaign.cash == True %}checked{% else %}disabled{% endif %}  />Cash
+<input type="radio" name="offerType" value="product" {% if campaign.product == True %}{% else %}disabled{% endif %}/>Product
+<input type="radio" name="offerType" value="discount" {% if campaign.discount == True %}{% else %}disabled{% endif %}/>Discount
+</p>
+<input id="proposalButton" type="submit" name="submit" value="Make Proposal"/>
+
+</form>
+
+</div>
+
+
+
+</div>
+
+<script type="text/javascript">
+
+$('#editCampaignButton').on('click',function(){
+
+$('#faderBox').fadeIn(200)
+$('#editCampaignBox').fadeIn(200)
+
+})
+
+$('#showPaymentFormButton').on('click',function(){
+
+$.get('/create_product_payment/?campaign_id={{campaign.id}}&numberOfSlots={{campaign.slots}}').done(function(data){
+$('#campaignPaymentFormBox').html(data)
+})
+
+$('#faderBox').fadeIn(200)
+$('#campaignPaymentFormBox').fadeIn(200)
+})
+
+$('#faderBox').on('click',function(){
+$('#faderBox').fadeOut(200)
+$('#editCampaignBox').fadeOut(200)
+$('#campaignPaymentFormBox').fadeOut(200)
+})
+
+$('#proposalButton').on('click',function(e){
+e.preventDefault()
+var proposalForm = $('#proposalForm')
+var href = proposalForm.attr('action')
+
+$.get('/check_proposal_submitted/?campaign_id={{campaign.id}}').done(function(data){
+console.log(data)
+if(parseInt(data)==0){
+$.post(href,proposalForm.serialize()).done(function(){
+location.href="/proposal/my/"
+})
+}else{
+
+$('#submitMessage').html("You've already sent a proposal")
+}
+
+})
+})
+
+</script>
+
+{% endblock bottomPage %}

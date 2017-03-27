@@ -1,0 +1,229 @@
+<html>
+
+<head>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<link href="https://file.myfontastic.com/n6vo44Re5QaWo8oCKShBs7/icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+<style type="text/css">
+body{
+font-family:'PT Sans';
+}
+</style>
+
+</head>
+
+<body>
+
+<style type="text/css">
+
+#formBox{
+border:solid 1px #dcdcdc;
+border-radius:5px;
+padding:10px;
+width:500px;
+background-color:#FFFFFF;
+}
+.textField{
+width:100%;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+font-size:18px;
+resize:vertical;
+}
+#submitFormButton{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+display:none;
+cursor:pointer;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#descriptionField{
+font-family:'PT Sans';
+height:175px;
+}
+#pageOne{
+
+min-height:310px;
+}
+
+#pageTwo{
+display:none;
+min-height:310px;
+}
+
+#pageThree{
+display:none;
+height:320px;
+}
+
+#nextButtonOne{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+text-align:center;
+cursor:pointer;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#nextButtonTwo{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+text-align:center;
+cursor:pointer;
+display:none;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#dropdown{
+width:100%;
+padding:10px;
+font-size:20px;
+border-radius:3px;
+}
+
+#socialIconsBox span{
+font-size:20px;
+position:relative;
+top:2.5px;
+}
+
+#socialIconsBox >span{
+margin: 0px 10px 0px 0px;
+}
+</style>
+
+<div id="formBox">
+
+<form action="#" method="get" enctype="multipart/form-data">
+
+<div id="pageOne">
+
+<p><input class="textField"type="text" name="title" placeholder="Campaign Title"/></p>
+<p><input class="textField"type="text" name="perk" placeholder="What perk are you offering?"/></p>
+<p>
+<textarea id="descriptionField"class="textField" name="description" placeholder="Describe your campaign and requirements. e.g. what"></textarea>
+</p>
+</div>
+<div id="pageTwo">
+
+<p>
+<i style="position:absolute;top:20px;padding-bottom:15px;font-size:30px;cursor:pointer;"id="backArrow" class="material-icons">arrow_back</i>
+</p>
+<div style="padding-bottom:10px;padding-top:20px;"><b>Niche</b></div>
+<select id="dropdown">
+<option value="tech">Tech</option>
+<option value="fashion">Fashion</option>
+<option value="food">Food</option>
+</select>
+
+<p>
+<input type="radio" name="product" value="1" checked="checked"> Product / Experiences
+<input type="radio" name="product" value="1"> Cash
+</p>
+
+<div id="socialIconsBox">
+<div style="padding-bottom:5px;"><b>Platforms</b></div>
+<span><span class="socicon-instagram"></span><input type="checkbox" name="platform" value="Instagram"></span>
+<span><span style="color:#55acee;"class="socicon-twitter"></span><input type="checkbox" name="platform" value="Twitter"></span>
+<span><span style="color:#CC181E;"class="socicon-youtube"></span><input type="checkbox" name="platform" value="YouTube"></span>
+</div>
+
+<p>
+<div style="padding-bottom:5px;"><b>Slots</b></div>
+<input class="textField"type="text" name="slots" placeholder="How many people do you need?"/>
+</p>
+
+</div>
+
+<div id="pageThree">
+<p>
+<i style="position:absolute;top:20px;padding-bottom:15px;font-size:30px;cursor:pointer;" class="material-icons" id="backArrow2">arrow_back</i>
+</p>
+<p>
+<div style="padding-bottom:5px;padding-top:20px;"><b>End date</b></div>
+<input class="textField"type="text" name="date" placeholder="YYYY-MM-YY"/>
+</p>
+
+<p>
+<div style="padding-bottom:5px;padding-top:20px;"><b>Campaign Image</b></div>
+<input type="file" name="image"/>
+</p>
+
+</div>
+
+<div id="nextButtonOne" page="1" class="nextButton">
+NEXT
+</div>
+<div id="nextButtonTwo" page="2" class="nextButton">
+NEXT
+</div>
+
+<input id="submitFormButton" type="submit" name="submit" value="Submit"/>
+
+</form>
+
+</div>
+
+<script type="text/javascript">
+
+$('.nextButton').on('click',function(){
+var $this = $(this)
+var page = $this.attr('page')
+
+if(page==1){
+
+$('#pageTwo').show()
+$('#pageOne').hide()
+$('#nextButtonOne').hide()
+$('#nextButtonTwo').show()
+
+}else if(page==2){
+
+$('#pageTwo').hide()
+$('#pageThree').show()
+$('#nextButtonTwo').hide()
+
+$('#submitFormButton').show()
+}
+
+})
+
+$('#backArrow').on('click',function(){
+
+$('#pageTwo').hide()
+$('#pageOne').show()
+$('#nextButtonOne').show()
+$('#nextButtonTwo').hide()
+$('#submitFormButton').hide()
+})
+$('#backArrow2').on('click',function(){
+
+$('#pageTwo').show()
+$('#pageThree').hide()
+$('#nextButtonTwo').show()
+$('#submitFormButton').hide()
+})
+</script>
+
+</body>
+
+
+</html>

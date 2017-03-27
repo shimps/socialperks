@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+<title>My Campaigns</title>
+{% endblock pageTitle %}
+
+{% block pageContent %}
+<div style="position:relative;text-align:left;position;font-size:1.2em;"><a href="/">< Back</a></div>
+
+<div style="text-align:center">
+
+<h3>My Campaigns</h3>
+
+{% for campaign in campaigns %}
+<p><a href="/campaign/{{campaign.slug}}">{{campaign.title}}</a> ( {{campaign.proposals.count}} proposals)</p>
+{% empty %}
+<p>You have not started any campaigns.</p>
+{% endfor %}
+</div>
+
+{% endblock pageContent %}

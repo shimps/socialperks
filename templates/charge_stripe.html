@@ -1,0 +1,16 @@
+<form action="/charge_stripe/" method="POST">{% csrf_token %}
+<p>
+<input type="text" name="name" placeholder="Hello"/>
+</p>
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="pk_test_HQyjH1Fn4ucxdLVO2TUdfzpg"
+    data-amount="10000"
+    data-name="SocialPerks"
+    data-description="Getting awesome perks for your scial media influence"
+    data-image="/img/documentation/checkout/marketplace.png"
+    data-locale="auto"
+    data-zip-code="true"
+    data-currency="gbp">
+  </script>
+</form>

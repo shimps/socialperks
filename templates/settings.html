@@ -1,0 +1,401 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+{% block topPage %}
+<div style="position:relative;font-size:2.25em;text-align:center;width:100%;">Settings</div>
+{% endblock topPage %}
+
+{% block bottomPage %}
+<style type="text/css">
+
+#settingsList{
+
+position:absolute;
+width:200px;
+height:300px;
+z-index:1;
+}
+
+#settingsList a{
+text-decoration:none;
+color:#000000;
+}
+
+#settingsBox{
+
+position: relative;
+min-height:300px;
+padding-left:200px;
+}
+
+.settingsOption{
+border-bottom:solid 1px #A7A9AB;
+padding:10px;
+cursor:pointer;
+text-align:center;
+}
+
+.settingsOption:hover{
+background-color:#404041;
+color:#FFFFFF;
+}
+
+#profileSettings{
+
+}
+#socialMediaSettings{
+display:none;
+}
+#accountSettings{
+display:none;
+}
+#paymentSettings{
+display:none;
+}
+
+#profilePic{
+float:right;
+}
+
+#profileSettingsForm{
+
+width:350px;
+}
+
+.textField{
+width:100%;
+box-sizing:border-box;
+padding:5px;
+padding-top:7.5px;
+padding-bottom:7.5px;
+font-family:'PT Sans';
+border-radius:5px;
+border:solid 1px gray;
+}
+
+.textField2{
+box-sizing:border-box;
+padding:5px;
+padding-top:7.5px;
+padding-bottom:7.5px;
+font-family:'PT Sans';
+border-radius:5px;
+border:solid 1px gray;
+width:49%;
+}
+
+.saveButton{
+width:100%;
+padding:10px;
+color:#FFFFFF;
+background-color:#00A550;
+border:solid 1px gray;
+font-size:22px;
+border-radius:5px;
+cursor:pointer;
+}
+
+#changePasswordForm{
+width:350px;
+}
+#changeEmailForm{
+width:350px;
+}
+
+#paypalForm{
+width:350px;
+}
+#paypalEmailField{
+border:solid 1px #cdcdcd;
+border-radius:5px;
+padding:10px;
+box-sizing:border-box;
+width:100%;
+font-size:16px;
+}
+
+#paypalSaveButton{
+color:#FFFFFF;
+padding:10px;
+font-size:22px;
+box-sizing:border-box;
+border-radius:5px;
+background-color:#00A550;
+border:solid 1px #00A550;
+width:100%;
+cursor:pointer;
+}
+
+#viewPlansButton{
+border:solid 1px #dcdcdc;
+border-radius:3px;
+padding:10px;
+text-align:center;
+width:50%;
+
+cursor:pointer;
+}
+#viewPlansButton:hover{
+border:solid 1px #27A9E1;
+}
+</style>
+
+<div style="box-sizing:border-box;">
+
+<div id="settingsList">
+
+<div style="background-color:#404041;color:#FFFFFF;"id="profileSettingsButton"class="settingsOption">
+Profile Settings
+</div>
+<div id="accountSettingsButton"class="settingsOption">
+Account Settings
+</div>
+<div style="display:none;"id="socialMediaSettingsButton"class="settingsOption">
+Social Media Settings
+</div>
+
+<div id="paymentSettingsButton"class="settingsOption">
+Payment Settings
+</div>
+<a href="/logout/">
+<div class="settingsOption">
+Log Out
+</div>
+</a>
+</div>
+
+<div id="settingsBox">
+<div style="border-left:solid 1px #A7A9AB;min-height:300px;padding:10px;">
+
+<div id="profileSettings">
+
+{% if loggedUser.profile.image %}
+<img id="profilePic"src="{{loggedUser.profile.image_thumbnail250.url}}" width=200/>
+{% else %}
+<img id="profilePic"src="{% static 'placeholder-square.jpg' %}" width=200/>
+{% endif %}
+<form id="profileSettingsForm" action="/create_profile/" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+<p>
+<input class="textField2"type="text" name="firstName" placeholder="First Name" value="{{loggedUser.profile.firstName}}"/>
+<input class="textField2"type="text" name="lastName" placeholder="Last Name" value="{{loggedUser.profile.lastName}}"/>
+</p>
+{% if loggedUser.profile.brand == True %}
+<p>
+<input class="textField"type="text" name="companyName" placeholder="Company Name" value="{{loggedUser.profile.companyName}}"/>
+</p>
+{% endif %}
+<p>
+Image: <input type="file" name="image"/>
+</p>
+<p>
+<input class="textField" type="text" name="website" placeholder="website" value="{{loggedUser.profile.website}}"/>
+</p>
+<p>
+<textarea style="resize:vertical;"class="textField" name="description" placeholder="About Me" >{{loggedUser.profile.description}}</textarea>
+</p>
+<p>
+<input class="textField" type="text" name="phone" placeholder="Phone Number" value="{{loggedUser.profile.phone}}"/>
+</p>
+<p>
+<input class="textField" type="text" name="address" placeholder="Address" value="{{loggedUser.profile.address}}"/>
+</p>
+<p>
+<input class="textField" type="text" name="city" placeholder="City" value="{{loggedUser.profile.city}}"/>
+</p>
+<p>
+<input class="textField" type="text" name="country" placeholder="Country" value="{{loggedUser.profile.country}}"/>
+</p>
+<p>
+<input class="textField" type="text" name="postcode" placeholder="PostCode" value="{{loggedUser.profile.postcode}}"/>
+</p>
+<p>
+<input class="saveButton" id="saveProfileButton"type="submit" name="submit" value="Save Profile"/>
+</p>
+
+
+
+
+
+
+</form>
+
+</div>
+
+<div id="socialMediaSettings">
+Social Media Settings Page
+</div>
+
+<div id="accountSettings">
+<form id="changePasswordForm" action="/change_password/"method="post">{% csrf_token %}
+<b>Change Password</b>
+
+<span style="color:red" id="changePasswordMessage"></span>
+<p>
+<input id="oldPasswordField"class="textField" type="password" name="oldPassword" placeholder="Old Password"/>
+</p>
+<p>
+<input id="newPasswordField"class="textField" type="password" name="newPassword" placeholder="New Password"/>
+</p>
+<p>
+<input id="confirmPasswordField"class="textField" type="password" name="newPasswordConfirm" placeholder="Confirm New Password"/>
+</p>
+<p>
+<input class="saveButton" id="saveAccountButton"type="submit" name="submit" value="Change Password"/>
+</p>
+</form>
+<b>Change Email</b>
+<form id="changeEmailForm"action="/change_email/" method="post">{% csrf_token %}
+<p>
+Current: <span id="currentEmail">{{loggedUser.email}}</span>
+</p>
+<p>
+<input class="textField"type="email" name="email" placeholder="New Email Address"/>
+</p>
+<p>
+<input class="saveButton"type="submit" name="submit" value="Change Email"/>
+</p>
+</form>
+</div>
+
+<div  id="paymentSettings">
+<div><b>Payment Settings</b></div>
+<p><i>SocialPerks only supports PayPal for payments. If you don't have a PayPal account, get one <a style="color:#27A9E1;text-decoration:none;"href="http://paypal.com" target="_blank">Here.</a></i></p>
+
+<form id="paypalForm" action="/change_paypal_account/" method="post">{% csrf_token %}
+<p><input id="paypalEmailField"type="email" name="email" placeholder="Paypal Email" value="{{loggedUser.profile.paypal_email}}"/></p>
+<input id="paypalSaveButton" type="submit" name="submit" value="Save Paypal Email"/>
+</form>
+
+{% if loggedUser.profile.brand == True %}
+<br>
+
+{% if loggedUser.profile.paid == True %}
+<p >ACCOUNT STATUS: <span style="color:green;">ACTIVE ( PAID )</span></p>
+<p >YOUR PLAN: <span style="color:green;">
+{% if loggedUser.profile.s_monthly == True %}
+Standard Monthly
+{% elif loggedUser.profile.s_6month == True %}
+Standard 6 Months
+{% elif loggedUser.profile.s_12month == True %}
+Standard 12 Months
+{% elif loggedUser.profile.g_monthly == True %}
+Gold Monthly
+{% elif loggedUser.profile.g_6month == True %}
+Gold 3 Months
+{% elif loggedUser.profile.g_12month == True %}
+Gold 12 Months
+{% endif %}
+</span>
+</p>
+{% else %}
+
+<p>ACCOUNT STATUS: <span style="color:red;">LIMITED ( UNPAID )</span></p>
+
+
+{% endif %}
+<a style="text-decoration:none;color:#000000;"href="/plans/">
+<div id="viewPlansButton">
+View Plans
+</div>
+</a>
+
+{% endif %}
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+$('.settingsOption').on('click',function(){
+ var $this = $(this)
+ 
+ $this.siblings().css('color','#000000')
+ $this.siblings().css('background-color','#FFFFFF')
+ 
+ $this.css('color','#FFFFFF')
+ $this.css('background-color','#404041')
+})
+
+$('#profileSettingsButton').on('click',function(){
+
+var profileSettings = $('#profileSettings')
+profileSettings.siblings().hide()
+profileSettings.show()
+
+})
+
+$('#socialMediaSettingsButton').on('click',function(){
+
+var socialMediaSettings = $('#socialMediaSettings')
+socialMediaSettings.siblings().hide()
+socialMediaSettings.show()
+
+})
+
+$('#accountSettingsButton').on('click',function(){
+
+var accountSettings = $('#accountSettings')
+accountSettings.siblings().hide()
+accountSettings.show()
+
+})
+
+$('#paymentSettingsButton').on('click',function(){
+
+var paymentSettings = $('#paymentSettings')
+paymentSettings.siblings().hide()
+paymentSettings.show()
+})
+
+$('#changePasswordForm').on('submit',function(e){
+
+e.preventDefault()
+var changePasswordForm = $('#changePasswordForm')
+var href = changePasswordForm.attr('action')
+var newPasswordField = $('#newPasswordField').val()
+var confirmPasswordField = $('#confirmPasswordField').val()
+
+if(newPasswordField==confirmPasswordField){
+
+$.post(href, changePasswordForm.serialize()).done(function(data){
+if(data=='no match'){
+$('#changePasswordMessage').html('<p>Your old password was incorrect.</p>').css('color','red')
+}else{
+
+$('#oldPasswordField').val('')
+$('#newPasswordField').val('')
+$('#confirmPasswordField').val('')
+$('#changePasswordMessage').html('<p>Succesfully changed</p>').css('color','green')
+}
+})
+
+
+}else{
+$('#changePasswordMessage').html('<p>Your passwords don\'t match.</p>').css('color','red')
+
+}
+
+
+})
+
+$('#changeEmailForm').on('submit',function(e){
+return 0;
+e.preventDefault()
+var $this = $(this)
+var href = $this.atrr('action')
+
+$.post(href, $this.serialize()).done(function(data){
+if(data=='changed'){
+
+}
+
+})
+
+})
+
+</script>
+{% endblock bottomPage %}

@@ -1,0 +1,13 @@
+{% for perk in perkboard %}
+<a style="color:#000000" href="/campaign/{{perk.slug}}/">
+
+
+{% include 'perk_feedlet.html' %}
+
+
+
+</a>
+
+{% empty %}
+<p>No matching perks. Try different filters.</p>
+{% endfor %}

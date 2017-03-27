@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+<title>SocialPerks Home</title>
+{% endblock pageTitle %}
+
+{% block pageContent %}
+
+<div style="text-align:center;">
+<h2>Welcome to SocialPerks<sup style="font-size:0.5em;"> &#174 </sup>! </h2>
+
+<p><a href="/profile/{{loggedUser.username}}">My Profile ({{loggedUser.username}})</a></p>
+<p><a href="#perkBoard">PerkBoard</a></p>
+<p><a href="/campaign/create_new/">Post New Campaign</a></p>
+<p><a href="/campaign/my/">My Campaigns</a></p>
+<p><a href="/proposal/my/">My Proposals</a></p>
+<p><a href="/register/">Register</a></p>
+<p><a href="/logout/">Logout</a></p>
+
+<div id="perkBoard">
+<h2>Perk Board</h2>
+
+{% for perk in perkboard %}
+<p>
+<a href="/campaign/{{perk.slug}}">{{perk.title}}</a>(
+{% if perk.cashOffer %} Cash, {% endif %}
+{% if perk.discountOffer %} Discount, {% endif %}
+{% if perk.productOffer %} Product {% endif %}
+)
+</p>
+{% endfor %}
+</div>
+
+</div>
+{% endblock pageContent %}

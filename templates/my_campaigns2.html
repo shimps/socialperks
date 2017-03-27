@@ -1,0 +1,415 @@
+{% extends 'testbase.html' %}
+{% load static %}
+
+{% block extraDivs %}
+<!--
+<style type="text/css">
+#newCampaignBox{
+position:fixed;
+background-color:#FFFFFF;
+width:400px;
+border:solid 1px #000000;
+border-radius:5px;
+z-index:6;
+left:50%;
+margin-left:-200px;
+box-sizing:border-box;
+padding:5px;
+
+display:none;
+}
+
+.textField{
+width:100%;
+padding:7.5px;
+position:relative;
+border-radius:5px;
+border:solid 1px gray;
+box-sizing:border-box;
+font-family:'PT Sans';
+}
+</style>
+
+
+<div id="newCampaignBox">
+<h3 style="text-align:center;">New Campaign</h3>
+<form action="/campaign/create_new/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<p>
+<input class="textField" type="text" name="campaignTitle" placeholder="Campaign Name"/>
+</p>
+<p>
+<textarea style="resize:vertical;" class="textField" type="text" name="perkDescription" placeholder="What perk are you offering? (Will be shown on PerkBoard)"></textarea>
+</p>
+<p>
+<input type="radio" name="offerType" value="discount"/>Discount
+<input type="radio" name="offerType" value="product"/>Product
+<input type="radio" name="offerType" value="cash"/>Cash
+</p>
+<p>
+<textarea style="resize:vertical;" class="textField" name="description" placeholder="Describe your campaign and requirements..."></textarea>
+</p>
+
+
+<p>Niche: 
+<select name="categoryOption">
+{% for category in categories %}
+<option value="{{category.id}}">{{category.title}} </option>
+{% endfor %}
+</select>
+</p>
+
+<p>
+<input class="textField" type="text" name="requirement" placeholder="What is your minimum follower requirement?"/>
+</p>
+<p>
+<input style="width:49%" class="textField" type="text" name="startDate" placeholder="Start Date"/>
+<input style="width:49%" class="textField" type="text" name="endDate" placeholder="End Date"/>
+</p>
+<p>
+Image: <input type="file" name="image"/>
+</p>
+<p>
+<input style="cursor:pointer;color:#FFFFFF;font-size:1.2em;background-color:#2AB573;" class="textField" type="submit" name="submit" value="Submit"/>
+</p>
+</form>
+</div>
+-->
+<style type="text/css">
+
+#newCampaignBox{
+border:solid 1px #dcdcdc;
+border-radius:5px;
+padding:10px;
+width:500px;
+background-color:#FFFFFF;
+position:fixed;
+left:50%;
+z-index:6;
+margin-left:-250px;
+display:none;
+}
+.textField{
+width:100%;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+font-size:18px;
+resize:vertical;
+}
+#submitFormButton{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+display:none;
+cursor:pointer;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#descriptionField{
+font-family:'PT Sans';
+height:175px;
+}
+#pageOne{
+
+min-height:310px;
+}
+
+#pageTwo{
+display:none;
+min-height:310px;
+}
+
+#pageThree{
+display:none;
+height:320px;
+}
+
+#nextButtonOne{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+text-align:center;
+cursor:pointer;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#nextButtonTwo{
+width:100%;
+font-size:18px;
+padding:15px;
+box-sizing:border-box;
+border:solid 1px #dcdcdc;
+border-radius:3px;
+text-align:center;
+cursor:pointer;
+display:none;
+background-color:#28A649;
+color:#FFFFFF;
+}
+
+#dropdown{
+width:100%;
+padding:10px;
+font-size:20px;
+border-radius:3px;
+}
+
+#socialIconsBox span{
+font-size:20px;
+position:relative;
+top:2.5px;
+}
+
+#socialIconsBox >span{
+margin: 0px 10px 0px 0px;
+}
+</style>
+
+<div id="newCampaignBox">
+
+<form action="/campaign/create_new/" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+<div id="pageOne">
+
+<p><input class="textField"type="text" name="campaignTitle" placeholder="Campaign Title"/></p>
+<p><input class="textField"type="text" name="perkDescription" placeholder="What perk are you offering?"/></p>
+<p>
+<textarea id="descriptionField"class="textField" name="description" 
+placeholder="Describe your campaign and requirements. e.g. Number of followers you need, number of posts you want, how much you're offering per post etc "></textarea>
+</p>
+</div>
+<div id="pageTwo">
+
+<p>
+<i style="position:absolute;top:20px;padding-bottom:15px;font-size:30px;cursor:pointer;"id="backArrow" class="material-icons">arrow_back</i>
+</p>
+<div style="padding-bottom:10px;padding-top:20px;"><b>Niche</b></div>
+<select id="dropdown"name="categoryOption">
+{% for category in categories %}
+<option value="{{category.id}}">{{category.title}} </option>
+{% endfor %}
+</select>
+
+<p>
+<input type="radio" name="offerType" value="product" checked="checked"> Product / Experiences
+<input type="radio" name="offerType" value="cash"> Cash
+</p>
+
+<div id="socialIconsBox">
+<div style="padding-bottom:5px;"><b>Platforms</b></div>
+<span><span class="socicon-instagram"></span><input type="checkbox" name="platform" value="instagram" checked></span>
+<span><span style="color:#55acee;"class="socicon-twitter"></span><input type="checkbox" name="platform" value="twitter" checked></span>
+<span><span style="color:#CC181E;"class="socicon-youtube"></span><input type="checkbox" name="platform" value="youtube" checked></span>
+</div>
+
+<p>
+<div style="padding-bottom:5px;"><b>Slots</b></div>
+<input class="textField"type="text" name="slots" placeholder="How many people do you need?"/>
+</p>
+
+</div>
+
+<div id="pageThree">
+<p>
+<i style="position:absolute;top:20px;padding-bottom:15px;font-size:30px;cursor:pointer;" class="material-icons" id="backArrow2">arrow_back</i>
+</p>
+<p>
+<div style="padding-bottom:5px;padding-top:20px;"><b>End date</b></div>
+<input class="textField"type="text" name="endDate" placeholder="YYYY-MM-YY"/>
+</p>
+
+<p>
+<div style="padding-bottom:5px;padding-top:20px;"><b>Campaign Image</b></div>
+<input type="file" name="image"/>
+</p>
+
+</div>
+
+<div id="nextButtonOne" page="1" class="nextButton">
+NEXT
+</div>
+<div id="nextButtonTwo" page="2" class="nextButton">
+NEXT
+</div>
+
+<input id="submitFormButton" type="submit" name="submit" value="SAVE"/>
+
+</form>
+
+</div>
+
+<script type="text/javascript">
+
+$('.nextButton').on('click',function(){
+var $this = $(this)
+var page = $this.attr('page')
+
+if(page==1){
+
+$('#pageTwo').show()
+$('#pageOne').hide()
+$('#nextButtonOne').hide()
+$('#nextButtonTwo').show()
+
+}else if(page==2){
+
+$('#pageTwo').hide()
+$('#pageThree').show()
+$('#nextButtonTwo').hide()
+
+$('#submitFormButton').show()
+}
+
+})
+
+$('#backArrow').on('click',function(){
+
+$('#pageTwo').hide()
+$('#pageOne').show()
+$('#nextButtonOne').show()
+$('#nextButtonTwo').hide()
+$('#submitFormButton').hide()
+})
+$('#backArrow2').on('click',function(){
+
+$('#pageTwo').show()
+$('#pageThree').hide()
+$('#nextButtonTwo').show()
+$('#submitFormButton').hide()
+})
+</script>
+{% endblock extraDivs %}
+
+{% block topPage %}
+
+<style type="text/css">
+
+#newCampaignButton{
+float:right;
+font-size:24px;
+position:relative;
+top:-36px;
+left:-20px;
+color:#27A9E1;
+cursor:pointer;
+}
+
+</style>
+
+<div style="position:relative;font-size:2.25em;text-align:center;width:100%;">My Campaigns</div>
+<div id="newCampaignButton">New</div>
+
+<script type="text/javascript">
+
+$('#newCampaignButton').on('click',function(){
+$('#newCampaignBox').fadeIn(200)
+$('#faderBox').fadeIn(200)
+
+})
+
+$('#faderBox').on('click',function(){
+$('#faderBox').fadeOut(200)
+$('#newCampaignBox').fadeOut(200)
+})
+
+</script>
+{% endblock topPage %}
+
+{% block bottomPageCss %}
+
+{% endblock bottomPageCss %}
+
+{% block bottomPage %}
+
+<style type="text/css">
+#container >div{
+float:left;
+margin: 0px 5px 0px 0px;
+}
+#proposalBox{
+position:relative;
+border:solid 1px #A7A9AB;
+width:31em;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:5px;
+top:-3px;
+min-height:450px;
+}
+#perkProfileBox{
+position:relative;
+border:solid 1px #A7A9AB;
+width:18.36em;
+background-color:#FFFFFF;
+box-sizing:border-box;
+padding:0px;
+min-height:450px;
+}
+
+.campaignFeedlet{
+border-bottom:solid 1px #A7A9AB;
+padding:10px;
+cursor:pointer;
+}
+
+.campaignFeedlet:hover{
+color:#FFFFFF;
+background-color:#404041;
+
+}
+
+
+</style>
+
+<div id="container">
+
+<div id="perkProfileBox">
+
+
+{% for campaign in campaigns %}
+<div class="campaignFeedlet" campaign_id="{{campaign.id}}">
+{{campaign.title}}
+</div>
+{% empty %}
+<p>You haven't started any new campaigns</p>
+{% endfor %}
+
+</div>
+
+<div id="proposalBox">
+
+<p>
+Pick a campaign to view the proposals.
+</p>
+
+</div>
+
+
+
+</div>
+
+<script type="text/javascript">
+$('.campaignFeedlet').on('click',function(){
+var $this = $(this)
+var href = '/proposal/load/'+$this.attr('campaign_id')
+
+$this.siblings().css('color','#000000')
+$this.siblings().css('background-color','#FFFFFF')
+
+$this.css('color','#FFFFFF')
+$this.css('background-color','#404041')
+$('#proposalBox').load(href)
+})
+
+</script>
+
+{% endblock bottomPage %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block pageContent %}
+
+<style type="text/css">
+
+#proposalMessage{
+border:solid 1px #C4D0D0;
+border-radius:0.5em;
+width:50%;
+padding:1em;
+}
+
+#makeProposalButton{
+color:#FFFFFF;
+background-color: #6662BF;
+padding:0.75em;
+border:solid 1px #C4D0D0;
+border-radius:0.5em;
+cursor:pointer;
+}
+</style>
+
+
+<div style="font-size:1.2em;position:relative;"><a href="/">< Back To Home</a></div>
+<br>
+<div style="text-align:center;">
+<h3>{{campaign.title}}</h3>
+{% if campaign.image %}
+<img src="{{campaign.image.url}}"/><br>
+{% endif %}
+<p>
+{{campaign.description}}
+</p>
+
+{% if campaign.user %}
+<p>Posted By: <a href="/profile/{{campaign.user.username}}">{{campaign.user.username}}</a></p>
+{% endif %}
+
+{% if campaign.cashOffer %}
+<p><b>Cash Offer:</b> ${{campaign.cashOffer.minimum}} - ${{campaign.cashOffer.maximum}}</p>
+<p><b>Perks Left:</b> {{campaign.cashOffer.stock}}</p>
+{% endif %}
+
+{% if campaign.discountOffer %}
+<p> <b>Discount:</b> {{campaign.discountOffer.discount}} % discount </p>
+<p><b>Perks Left:</b> {{campaign.discountOffer.stock}}</p>
+{% endif %}
+
+{% if campaign.productOffer %}
+<p><b>Product:</b> Get a free product!</p>
+<p><b>Perks Left:</b> {{campaign.productOffer.stock}}</p>
+{% endif %}
+
+
+
+<div>
+<h3>Proposal</h3>
+<form id="proposalForm" action="/proposal/post/{{campaign.id}}/" method="post">{% csrf_token %}
+
+<p><textarea id="proposalMessage" name="proposalMessage" placeholder="Proposal Message..."></textarea></p>
+{% if campaign.cashOffer %}
+<p><input id="proposalMessage" type="text" name="cashProposal" placeholder="Your Cash Proposal"/></p>
+{% endif %}
+<p><input type="radio" name="offerType" value="cash"/>Cash</p>
+<p><input type="radio" name="offerType" value="product"/>Product</p>
+<p><input type="radio" name="offerType" value="discount"/>Discount</p>
+
+<p><input id="makeProposalButton" type="submit" name="submit" value="Make Proposal"/></p>
+</form>
+
+
+</div>
+
+</div>
+{% endblock pageContent %}

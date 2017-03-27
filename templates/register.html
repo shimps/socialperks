@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+
+{% endblock pageTitle %}
+
+{% block pageContent %}
+<div style="position:relative;text-align:left;position;font-size:1.2em;"><a href="/">< Back</a></div>
+
+<style type="text/css">
+
+#influencerBox{
+border:solid 1px #000000;
+box-sizing:border-box;
+padding:1em;
+width:20em;
+}
+
+#brandBox{
+border:solid 1px #000000;
+box-sizing:border-box;
+padding:1em;
+width:20em;
+}
+
+.textField{
+width:100%;
+padding:0.5em;
+border-radius:0.3em;
+border:solid 1px #C4D0D0;
+}
+
+.submitButton{
+color:#FFFFFF;
+background-color: #6662BF;
+padding:0.75em;
+border:solid 1px #C4D0D0;
+border-radius:0.5em;
+cursor:pointer;
+}
+</style>
+
+<div style="text-align:center;margin:0 auto;">
+<h3>Sign Up For SocialPerks</h3>
+
+<div id="influencerBox" style="margin:0 auto;">
+<h3>Influencer</h3>
+
+<form action="/register/influencer/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<p><input class="textField" type="text" name="firstName" placeholder="First Name"/></p>
+<p><input class="textField" type="text" name="lastName" placeholder="Last Name"/></p>
+Image: <input type="file" name="profilePic"/>
+<p><input class="textField" type="text" name="phone" placeholder="Phone"/></p>
+<p><input class="textField" type="text" name="address" placeholder="Address"/></p>
+<p><input class="textField" type="text" name="city" placeholder="City"/></p>
+<p><input class="textField" type="text" name="postcode" placeholder="Postcode / Zip Code"/></p>
+<p><input class="textField" type="text" name="country" placeholder="Country"/></p>
+<br>
+<p><input class="textField" type="text" name="username" placeholder="Username"/></p>
+<p><input class="textField" type="email" name="email" placeholder="Email"/></p>
+<p><input class="textField" type="password" name="password" placeholder="Password"/></p>
+<p><input class="textField" type="password" name="confirmPassword" placeholder="Confirm Password"/></p>
+<p><input class="submitButton" type="submit" name="submit" value="Sign Up"/></p>
+</form>
+
+</div> 
+<br>
+<div id="brandBox" style="margin:0 auto;">
+<h3>Brand</h3>
+
+<form action="/register/brand/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<p><input class="textField" type="text" name="firstName" placeholder="Contact's First Name"/></p>
+<p><input class="textField" type="text" name="lastName" placeholder="Contact's Last Name"/></p>
+<p><input class="textField" type="text" name="companyName" placeholder="Company Name"/></p>
+Image: <input type="file" name="profilePic"/>
+<p><input class="textField" type="text" name="phone" placeholder="Phone"/></p>
+<p><input class="textField" type="text" name="address" placeholder="Address"/></p>
+<p><input class="textField" type="text" name="city" placeholder="City"/></p>
+<p><input class="textField" type="text" name="postcode" placeholder="Postcode / Zip Code"/></p>
+<p><input class="textField" type="text" name="country" placeholder="Country"/></p>
+<br>
+<p><input class="textField" type="text" name="username" placeholder="Username"/></p>
+<p><input class="textField" type="email" name="email" placeholder="Email"/></p>
+<p><input class="textField" type="password" name="password" placeholder="Password"/></p>
+<p><input class="textField" type="password" name="confirmPassword" placeholder="Confirm Password"/></p>
+<p><input class="submitButton" type="submit" name="submit" value="Sign Up"/></p>
+</form>
+
+</div>
+</div>
+{% endblock pageContent %}
