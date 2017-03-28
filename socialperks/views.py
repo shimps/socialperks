@@ -42,7 +42,7 @@ def message(backend, user, response, *args, **kwargs):
 def charge_stripe(request):
 
     if request.POST:
-        stripe.api_key = "sk_test_tXPfWi4uWQhVG529QrRbwZ6t"
+        stripe.api_key = "sk_test_xxxxxxxxxxxxxxxxxxxx"
 
         # Get the credit card details submitted by the form
         token = request.POST['stripeToken']
@@ -142,8 +142,8 @@ def generate_youtube_account_data():
 
 def generate_twitter_account_data(username):
     
-    atoken='462365026-K2jJRlVdXwrUxw8hF3tvxV9e0cvPH5vTWm2PPopO'
-    asecret='5638hO4zsQZD21Mm2ecTqq7u6520cBMbwDVFg3pichiYO'
+    atoken='xxxxxxxxxxxxxxxx
+    asecret='xxxxxxxxxxxxxxxxxxxxxx'
     auth=tweepy.OAuthHandler(TWITTER_CONSUMER_KEY,TWITTER_CONSUMER_SECRET)
     auth.set_access_token(atoken, asecret)
     api=tweepy.API(auth)
