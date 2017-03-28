@@ -233,8 +233,8 @@ else:
 USE_S3 = False
 if 'RDS_DB_NAME' in os.environ: #Checks if in the cloud 
     USE_S3 = True
-    AWS_ACCESS_KEY_ID = 'AKIAJO2ZVYWNO7MSLDBQ'
-    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_ACCESS_KEY_ID = 'AKIXXXXXXXXXXXXX'
+    AWS_SECRET_ACCESS_KEY = 'XXXXXXXXX'
     AWS_STORAGE_BUCKET_NAME = 'socialperks'
 
 if USE_S3:
