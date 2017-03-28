@@ -56,7 +56,7 @@ def charge_stripe(request):
     args.update(csrf(request))
     return render_to_response('charge_stripe.html',args)
 
-def oauth_callback(request):
+def youtube_oauth_callback(request):
     
     from settings import YOUTUBE_CLIENT_ID,YOUTUBE_CLIENT_SECRET,YOUTUBE_CALLBACK_URL
     import json
@@ -756,45 +756,6 @@ def createNewCampaign(request):
             
         campaign.save()
 
-        
-        #This Section Handles the Perks
-##        if request.POST.get('product') is not None:
-##            
-##            productDescription = request.POST['productDescription']
-##            productStock = request.POST['productStock']
-##
-##            if request.FILES.get('productImage') is not None:
-##                productImage = request.FILES['productImage']
-##            else:
-##                productImage = None
-##
-##            ProductOffer.objects.create(image=productImage,description=productDescription,
-##                                        stock=productStock,campaign=campaign)
-##            
-##        if request.POST.get('discount') is not None:
-##
-##            discountDescription = request.POST['discountDescription']
-##            discountStock = request.POST['discountStock']
-##            discountAmount = request.POST['discountAmount']
-##            
-##            if request.FILES.get('discountImage') is not None:
-##                discountImage = request.FILES['discountImage']
-##            else:
-##                discountImage = None
-##
-##            DiscountOffer.objects.create(description=discountDescription,stock=discountStock,
-##                                         image=discountImage,discount=discountAmount,campaign=campaign)
-##            
-##        if request.POST.get('cash') is not None:
-##
-##            cashDescription = request.POST['cashDescription']
-##            cashStock = request.POST['cashStock']
-##            minimumAmount = request.POST['minimumCash']
-##            maximumAmount = request.POST['maximumCash']
-##
-##            CashOffer.objects.create(description=cashDescription,stock=cashStock, minimum=minimumAmount,
-##                                   maximum=maximumAmount,campaign=campaign)
-
         return HttpResponseRedirect('/campaign/%s'%campaign.slug)
     else:
         args={}
@@ -831,19 +792,6 @@ def editCampaign(request,campaign_id):
         campaign.category = category
         campaign.endDate=endDate
         #campaign.requirement = requirement
-        
-##        if request.POST['offerType']=='cash':
-##            campaign.cash = True
-##            campaign.product=False
-##            campaign.discount=False
-##        elif request.POST['offerType']=='product':
-##            campaign.product = True
-##            campaign.cash = False
-##            campaign.discount=False
-##        elif request.POST['offerType']=='discount':
-##            campaign.discount = True
-##            campaign.cash=False
-##            campaign.product=False
 
         platforms = request.POST.getlist('platform')
 
@@ -961,19 +909,6 @@ def postProposal(request,campaign_id):
         proposal = Proposal.objects.create(discount=True,description=proposalMessage,user=request.user,
                                 campaign=campaign)
     Notification.objects.create(action='PR',proposal=proposal,sender=request.user,receiver=campaign.user)
-    
-
-##    if request.POST['offerType']=='cash':
-##        Proposal.objects.create(cash=True,cashAmount=cashProposal,description=proposalMessage,
-##                                user=request.user,campaign=campaign)
-##    elif request.POST['offerType']=='product':
-##        Proposal.objects.create(product=True,description=proposalMessage,user=request.user,
-##                                campaign=campaign)
-##    elif request.POST['offerType']=='discount':
-##        Proposal.objects.create(discount=True,description=proposalMessage,user=request.user,
-##                                campaign=campaign)
-    
-        
     
     return HttpResponseRedirect('/proposal/%s'%proposal.id)
 
