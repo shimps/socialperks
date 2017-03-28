@@ -55,7 +55,7 @@ urlpatterns = [
     #Support Pages
     url(r'^read_notification/(?P<notification_id>\d+)/$','socialperks.views.read_notification'),
     url(r'^leaderboard/$','socialperks.views.leaderboard'),
-    url(r'^oauth_callback/$','socialperks.views.oauth_callback'),
+    url(r'^oauth_callback/$','socialperks.views.youtube_oauth_callback'),
     url(r'^plans/$','socialperks.views.view_prices'),
     url(r'^create_product_payment/$','socialperks.views.create_product_payment'),
     url(r'^paypal/',include('paypal.standard.ipn.urls')),
