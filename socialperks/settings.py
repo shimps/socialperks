@@ -74,10 +74,10 @@ else:
 
 #Payments
 if DEBUG==True:
-    PAYPAL_RECEIVER_EMAIL = "smutangama1-facilitator@gmail.com"
+    PAYPAL_RECEIVER_EMAIL = "xxxxxxxxxxxxxxxxxxxx"
     PAYPAL_TEST=True
 else:
-    PAYPAL_RECEIVER_EMAIL = "smutangama1@gmail.com"
+    PAYPAL_RECEIVER_EMAIL = "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
     PAYPAL_TEST=False
 
 PAYMENT_STANDARD_MONTHLY = 12.99
